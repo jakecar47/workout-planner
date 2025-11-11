@@ -1,0 +1,71 @@
+<!--
+Copyright (c) 2024 Sami Menik, PhD. All rights reserved.
+
+This is a project developed by Dr. Menik to give the students an opportunity to apply database concepts learned in the class in a real world project. Permission is granted to host a running version of this software and to use images or videos of this work solely for the purpose of demonstrating the work to potential employers. Any form of reproduction, distribution, or transmission of the software's source code, in part or whole, without the prior written consent of the copyright owner, is strictly prohibited.
+-->
+<!DOCTYPE html>
+<html lang="en">
+{{> fragments/html_header}}
+
+<body>
+
+    {{> fragments/top_bar}}
+    
+    <div class="container center-align narrow">
+        {{> fragments/error_message}}
+        <title>Trending Hashtags</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; }
+        h2 { margin-bottom: 12px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background: #f6f6f6; text-align: left; }
+        tr:nth-child(even) { background: #fafafa; }
+        .tag a { text-decoration: none; }
+        .controls { margin: 8px 0 16px; }
+    </style>
+</head>
+<body>
+    <h2>Trending Hashtags (Last 7 Days)</h2>
+    <div class="controls">
+        <form method="get" th:action="@{/trending}">
+            <label for="limit">Show top:</label>
+            <input type="number" id="limit" name="limit" min="1" max="50" th:value="${limit}"/>
+            <button type="submit">Refresh</button>
+        </form>
+    </div>
+    <table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Hashtag</th>
+            <th>Posts</th>
+            <th>Last Used</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#tags}}
+        <tr>
+            <td>{{-index}}</td>
+            <td class="tag">
+                <a href="/search?hashtags={{tag}}">#{{tag}}</a>
+            </td>
+            <td>{{postCount}}</td>
+            <td>{{lastUsed}}</td>
+        </tr>
+        {{/tags}}
+        {{^tags}}
+        <tr><td colspan="4">No trending hashtags in the last 7 days.</td></tr>
+        {{/tags}}
+    </tbody>
+</table>
+    <p style="margin-top:12px;">
+        Tip: Click a hashtag to view matching posts on the search page.
+    </p>
+    </div>
+
+    {{> fragments/footer}}
+
+</body>
+
+</html>
