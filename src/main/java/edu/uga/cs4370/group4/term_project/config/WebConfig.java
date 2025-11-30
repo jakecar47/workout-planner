@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 // CURRENTLY ALLOWS OPEN ACCESS TO PAGES FOR UI TESTING
 @Configuration
 public class WebConfig {
