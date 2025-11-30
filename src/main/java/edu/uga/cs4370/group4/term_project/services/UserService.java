@@ -13,5 +13,8 @@ import org.springframework.web.context.annotation.SessionScope;
 @Service
 @SessionScope
 public class UserService {
-    
+    // Authentication (IMPLEMENT THIS LATER)
+    public boolean isAuthenticated() {
+        return true;
+    }
 }
