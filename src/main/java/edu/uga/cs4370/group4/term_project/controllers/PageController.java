@@ -8,48 +8,45 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PageController {
 
-    private static final String SITE_NAME = "Fitness Tracker";
-
-    private ModelAndView createModelAndView(String viewName, boolean showNavbar, boolean showProfileIcon) {
-        ModelAndView mv = new ModelAndView(viewName);
-        mv.addObject("title", SITE_NAME);
-        mv.addObject("showNavbar", showNavbar);
-        mv.addObject("showProfileIcon", showProfileIcon);
-        return mv;
-    }
-
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(name = "error", required = false) String error) {
-        return createModelAndView("login", false, false);
+        ModelAndView mv = new ModelAndView("login");
+        return mv;
     }
 
     @GetMapping("/register")
     public ModelAndView register(@RequestParam(name = "error", required = false) String error) {
-        return createModelAndView("register", false, false);
+        ModelAndView mv = new ModelAndView("register");
+        return mv;
     }
 
     @GetMapping("/home")
     public ModelAndView home(@RequestParam(name = "error", required = false) String error) {
-        return createModelAndView("home", true, true);
+        ModelAndView mv = new ModelAndView("home");
+        return mv;
     }
 
     @GetMapping("/profile")
     public ModelAndView profile(@RequestParam(name = "error", required = false) String error) {
-        return createModelAndView("profile", true, true);
+        ModelAndView mv = new ModelAndView("profile");
+        return mv;
     }
 
     @GetMapping("/workouts")
     public ModelAndView workouts(@RequestParam(name = "error", required = false) String error) {
-        return createModelAndView("workouts", true, true);
+        ModelAndView mv = new ModelAndView("workouts");
+        return mv;
     }
 
     @GetMapping("/exercises")
     public ModelAndView exercises(@RequestParam(name = "error", required = false) String error) {
-        return createModelAndView("exercises", true, true);
+        ModelAndView mv = new ModelAndView("exercises");
+        return mv;
     }
 
     @GetMapping("/")
     public ModelAndView def(@RequestParam(name = "error", required = false) String error) {
-        return createModelAndView("login", false, false);
+        ModelAndView mv = new ModelAndView("login");
+        return mv;
     }
 }
