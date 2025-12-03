@@ -53,7 +53,9 @@ create table if not exists goals (
     id int auto_increment,
     description varchar(255) not null,
     user_id int not null,
+    exercise_id int,
     created_at timestamp default current_timestamp,
     primary key(id),
     foreign key (user_id) references users(id) on delete cascade
+    foreign key (exercise_id) references exercises(id) on delete cascade
 );
