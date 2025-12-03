@@ -25,6 +25,7 @@ create table if not exists workouts (
     created_at timestamp default current_timestamp,
     primary key(id),
     foreign key(user_id) references users(id) on delete cascade
+    unique(name)
 );
 
 -- EXERCISES TABLE
@@ -34,6 +35,7 @@ create table if not exists exercises (
     target_muscle varchar(255),
     description text,
     primary key(id)
+    unique: (name)
 );
 
 -- WORKOUT_EXERCISES TABLE
