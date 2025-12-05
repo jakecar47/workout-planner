@@ -1,3 +1,5 @@
+-- DDL queries to create the database schema for the web app
+--
 drop database if exists workout_app;
 create database if not exists workout_app;
 use workout_app;
