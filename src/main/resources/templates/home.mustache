@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- TOP NAV BAR (SINGLE INSTANCE) -->
+<div class="navbar">
+
+    <!-- LEFT: LOGO + SITE NAME -->
+    <div class="nav-left brand">
+        <img src="/images/BoxCruncherLogo.png" class="nav-logo" alt="BoxCruncher Logo">
+        <span class="site-name">BoxCruncher</span>
+    </div>
+
+    <!-- CENTER: NAV BUTTONS -->
+    <div class="nav-center">
+        <a href="/workouts" class="nav-link">Workouts</a>
+        <a href="/exercises" class="nav-link">Exercises</a>
+    </div>
+
+    <!-- RIGHT: PROFILE AVATAR + NAME -->
+    <div class="nav-right">
+        <a href="/profile" class="profile-link">
+            <img src="/images/BoxCruncherLogo.png" class="profile-pic" alt="Profile">
+            <span class="profile-name">{{user.uname}}</span>
+        </a>
+    </div>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-container home-grid">
+
+    <table class="weekly-table">
+
+        <thead>
+            <tr>
+                <th>DAY</th>
+                <th>WORKOUT</th>
+                <th>NOTES</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>MON</td><td>Workout</td><td></td></tr>
+            <tr><td>TUE</td><td>Workout</td><td></td></tr>
+            <tr><td>WED</td><td>Workout</td><td></td></tr>
+            <tr><td>THU</td><td>Workout</td><td></td></tr>
+            <tr><td>FRI</td><td>Workout</td><td></td></tr>
+            <tr><td>SAT</td><td>Workout</td><td></td></tr>
+            <tr><td>SUN</td><td>Workout</td><td></td></tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

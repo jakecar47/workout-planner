@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workouts</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <span class="site-name">Workouts</span>
+
+    <div class="nav-right">
+        <a href="/profile">
+            <img src="/images/default_pfp.png" alt="Profile">
+        </a>
+    </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page-container">
+
+    <h1 class="section-title">Your Workouts</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#workouts}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{description}}</td>
+                    <td>{{startTime}}</td>
+                    <td>{{endTime}}</td>
+                    <td>
+                        <form action="/workouts/delete/{{id}}" method="POST" style="display:inline;">
+                            <button class="black-button" style="padding:8px 12px;">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {{/workouts}}
+
+                {{^workouts}}
+                <tr>
+                    <td colspan="5" style="text-align:center; color:#ccc;">
+                        No workouts found. Create one!
+                    </td>
+                </tr>
+                {{/workouts}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ADD WORKOUT BUTTON -->
+    <div class="center-button">
+        <button class="black-button" onclick="window.location.href='/workouts/new'">
+            Add Workout
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>

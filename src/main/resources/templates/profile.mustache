@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <span class="site-name">Profile</span>
+
+    <div class="nav-right">
+        <a href="/home">
+            <img src="/images/default_pfp.png" alt="Profile">
+        </a>
+    </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page-container">
+
+    <!-- PROFILE PICTURE -->
+    <div class="profile-center">
+        <img src="/images/default_pfp.png" alt="User Profile">
+    </div>
+
+    <!-- USERNAME -->
+    <h1 class="section-title" style="text-align:center; margin-top:15px;">
+        {{user.uname}}
+    </h1>
+
+    <!-- GOALS SECTION -->
+    <h2 class="section-title mt-30">Your Goals</h2>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {{#goals}}
+                <tr>
+                    <td>{{description}}</td>
+                    <td>
+                        <!-- Hardcoded "No" until goal completion is implemented -->
+                        <span style="color:#ffcc00; font-weight:bold;">In Progress</span>
+                    </td>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Goal</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <span class="site-name">Add Goal</span>
+
+    <div class="nav-right">
+        <a href="/profile">
+            <img src="/images/default_pfp.png" alt="Profile">
+        </a>
+    </div>
+</div>
+
+
+<!-- PAGE CONTENT -->
+<div class="page-container">
+
+    <h1 class="section-title">Create New Goal</h1>
+
+    {{#error}}
+        <p class="error-message">{{error}}</p>
+    {{/error}}
+
+    <form action="/goals/new" method="POST" class="auth-container" style="width:100%; max-width:500px;">
+
+        <!-- GOAL DESCRIPTION -->
+        <input 
+            type="text" 
+            name="description" 
+            placeholder="Goal Description (e.g. Bench 225 lbs, Run 5 miles)"
+            required
+        >
+
+        <!-- OPTIONAL EXERCISE SELECTOR -->
+        <select name="exercise_id" 
+                style="width:100%; padding:12px; background:#2a2a2a; border:1px solid #444; border-radius:6px; color:white;">
+            
+            <option value="">No specific exercise</option>
+
+            {{#exercises}}
+                <option value="{{id}}">{{name}} ({{target_muscle}})</option>
+            {{/exercises}}
+
+        </select>
+
+        <button type="submit">Add Goal</button>
+
+    </form>
+
+    <!-- BACK BUTTON -->
+    <div class="center-button">
+        <button class="black-button" onclick="window.location.href='/profile'">
+            Back to Profile
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>

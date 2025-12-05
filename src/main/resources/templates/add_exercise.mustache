@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Exercise</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <span class="site-name">WorkoutApp</span>
+    <div class="nav-right">
+        <img src="/img/profile.png" alt="profile">
+    </div>
+</div>
+
+<div class="page-container">
+
+    <h2 class="section-title">Add New Exercise</h2>
+
+    {{#error}}
+        <p style="color: #ff6666; margin-top: 10px;">{{error}}</p>
+    {{/error}}
+
+    <form method="POST" action="/exercises/new" style="margin-top: 20px; display:flex; flex-direction:column; gap:15px;">
+
+        <div>
+            <label>Exercise Name</label><br>
+            <input type="text" name="name" placeholder="Bench Press" required>
+        </div>
+
+        <div>
+            <label>Target Muscle (optional)</label><br>
+            <input type="text" name="targetMuscle" placeholder="Chest, Legs, Arms, etc.">
+        </div>
+
+        <div>
+            <label>Description (optional)</label><br>
+            <textarea name="description" rows="4" style="width:100%; padding:10px; background:#2a2a2a; border-radius:6px; border:1px solid #444; color:white;"></textarea>
+        </div>
+
+        <button class="black-button" type="submit">Add Exercise</button>
+
+    </form>
+
+    <div class="center-button">
+        <a href="/exercises">
+            <button class="black-button">Back to Exercises</button>
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
