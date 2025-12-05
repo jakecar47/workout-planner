@@ -69,8 +69,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<!-- Authentication and access-control framework -->
-			<!-- https://spring.io/projects/spring-security -->
+			<!-- Support for testing Spring Security -->
+			<!-- https://docs.spring.io/spring-security/reference/servlet/test/index.html -->
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
