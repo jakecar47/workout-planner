@@ -1,0 +1,5 @@
+perf.txt lists the statements you used to create indexes.
+It also include the queries that were affected by the indexes.
+Under each query, provide time consumption before and after adding the index. 
+This should be done after populating the database with data.
+---

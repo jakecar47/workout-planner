@@ -1,0 +1,4 @@
+-- All queries you used in the web app (both data retrieval and data modification)
+-- Include a brief comment above each query explaining the purpose of the query in the context of your web app. 
+-- Also provide the URL path of the page that uses it in the web app
+--
