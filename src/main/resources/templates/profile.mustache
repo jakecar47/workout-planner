@@ -5,44 +5,50 @@
     <title>Profile</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
-    <span class="site-name">Site Name</span>
-    <div class="nav-right"></div>
+    <span class="site-name">Profile</span>
+
+    <div class="nav-right">
+        <a href="/home">
+            <img src="/images/default_pfp.png" alt="Profile">
+        </a>
+    </div>
 </div>
 
+<!-- PAGE CONTENT -->
 <div class="page-container">
 
+    <!-- PROFILE PICTURE -->
     <div class="profile-center">
-        <img src="/img/profile.png" alt="Profile">
+        <img src="/images/default_pfp.png" alt="User Profile">
     </div>
 
-    <h2 class="section-title" style="text-align:center; margin-top:15px;">Name</h2>
+    <!-- USERNAME -->
+    <h1 class="section-title" style="text-align:center; margin-top:15px;">
+        {{user.uname}}
+    </h1>
 
-    <h3 class="section-title">Goals</h3>
+    <!-- GOALS SECTION -->
+    <h2 class="section-title mt-30">Your Goals</h2>
 
     <div class="table-container">
         <table>
-            <tr>
-                <th>Goal</th>
-                <th>Completed</th>
-            </tr>
-            <tr><td>Goal 1</td><td>No</td></tr>
-            <tr><td>Goal 2</td><td>No</td></tr>
-            <tr><td>Goal 3</td><td>No</td></tr>
-            <tr><td>Goal 4</td><td>No</td></tr>
-            <tr><td>Goal 5</td><td>No</td></tr>
-        </table>
-    </div>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-    <div class="double-button">
-        <button class="black-button" onclick="window.location.href='/home'">Back</button>
-        <button class="black-button" >Add Goal</button>
-
-    </div>
-
-</div>
-
-</body>
-</html>
+            <tbody>
+            {{#goals}}
+                <tr>
+                    <td>{{description}}</td>
+                    <td>
+                        <!-- Hardcoded "No" until goal completion is implemented -->
+                        <span style="color:#ffcc00; font-weight:bold;">In Progress</span>
+                    </td>

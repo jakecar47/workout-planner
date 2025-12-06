@@ -5,41 +5,58 @@
     <title>Home</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
+<!-- TOP NAV BAR (SINGLE INSTANCE) -->
 <div class="navbar">
-    <span class="site-name">Site Name</span>
 
+    <!-- LEFT: LOGO + SITE NAME -->
+    <div class="nav-left brand">
+        <img src="/images/BoxCruncherLogo.png" class="nav-logo" alt="BoxCruncher Logo">
+        <span class="site-name">BoxCruncher</span>
+    </div>
+
+    <!-- CENTER: NAV BUTTONS -->
+    <div class="nav-center">
+        <a href="/workouts" class="nav-link">Workouts</a>
+        <a href="/exercises" class="nav-link">Exercises</a>
+    </div>
+
+    <!-- RIGHT: PROFILE AVATAR + NAME -->
     <div class="nav-right">
-        <a href="/profile">
-            <img src="/img/profile.png" alt="profile icon">
+        <a href="/profile" class="profile-link">
+            <img src="/images/BoxCruncherLogo.png" class="profile-pic" alt="Profile">
+            <span class="profile-name">{{user.uname}}</span>
         </a>
     </div>
+
 </div>
 
-<div class="page-container">
+<!-- MAIN CONTENT -->
+<div class="page-container home-grid">
 
-    <div class="tab-selector">
-        <button onclick="window.location.href='/workouts'">Workouts</button>
-        <button onclick="window.location.href='/exercises'">Exercises</button>
-    </div>
+    <table class="weekly-table">
 
-    <div class="table-container">
-        <table>
+        <thead>
             <tr>
-                <th>Day</th>
-                <th>Workout</th>
-                <th>Notes</th>
+                <th>DAY</th>
+                <th>WORKOUT</th>
+                <th>NOTES</th>
             </tr>
-            <tr><td>Mon</td><td>Workout 1</td><td></td></tr>
-            <tr><td>Tue</td><td>Workout 2</td><td></td></tr>
-            <tr><td>Wed</td><td>Workout 3</td><td></td></tr>
-            <tr><td>Thu</td><td>Workout 4</td><td></td></tr>
-            <tr><td>Fri</td><td>Workout 5</td><td></td></tr>
-            <tr><td>Sat</td><td>Workout 6</td><td></td></tr>
-            <tr><td>Sun</td><td>Workout 7</td><td></td></tr>
-        </table>
-    </div>
+        </thead>
+
+        <tbody>
+            <tr><td>MON</td><td>Workout</td><td></td></tr>
+            <tr><td>TUE</td><td>Workout</td><td></td></tr>
+            <tr><td>WED</td><td>Workout</td><td></td></tr>
+            <tr><td>THU</td><td>Workout</td><td></td></tr>
+            <tr><td>FRI</td><td>Workout</td><td></td></tr>
+            <tr><td>SAT</td><td>Workout</td><td></td></tr>
+            <tr><td>SUN</td><td>Workout</td><td></td></tr>
+        </tbody>
+
+    </table>
 
 </div>
 

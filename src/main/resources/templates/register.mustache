@@ -5,19 +5,52 @@
     <title>Register</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
 <div class="auth-container">
+
     <h2>Register</h2>
 
-    <input type="text" placeholder="Username">
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Password">
-    <input type="password" placeholder="Repeat Password">
+    {{#error}}
+        <p class="error-message">{{error}}</p>
+    {{/error}}
 
-    <button onclick="window.location.href='/login'">Register</button>
+    <form action="/register" method="POST">
 
-    <p>Already have an account? <a href="/login">Login here</a></p>
+        <input 
+            type="text" 
+            name="username" 
+            placeholder="Username"
+            required
+        >
+
+        <input 
+            type="email" 
+            name="email" 
+            placeholder="Email"
+            required
+        >
+
+        <input 
+            type="password" 
+            name="password" 
+            placeholder="Password"
+            required
+        >
+
+        <input 
+            type="password" 
+            name="repeatPassword" 
+            placeholder="Repeat Password"
+            required
+        >
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a href="/login" style="color:#ffcc00;">Login</a></p>
+
 </div>
 
 </body>

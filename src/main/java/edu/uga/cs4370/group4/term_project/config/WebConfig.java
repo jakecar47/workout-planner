@@ -1,24 +1,48 @@
-package edu.uga.cs4370.group4.term_project.config; 
+package edu.uga.cs4370.group4.term_project.config;
 
-import org.springframework.context.annotation.Bean;
+import edu.uga.cs4370.group4.term_project.components.AuthInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
-// CURRENTLY ALLOWS OPEN ACCESS TO PAGES FOR UI TESTING
 @Configuration
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    private final AuthInterceptor authInterceptor;
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
-            );
+    @Autowired
+    public WebConfig(AuthInterceptor authInterceptor) {
+        this.authInterceptor = authInterceptor;
+    }
 
-        return http.build();
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/login",
+                        "/register",
+                        "/logout",
+
+                        // STATIC ASSETS
+                        "/css/**",
+                        "/js/**",
+                        "/images/**",
+                        "/uploads/**",     
+                        "/favicon.ico"
+                );
+    }
+
+    // SERVE FILES FROM /uploads/exercises
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations(
+                        "file:C:/Users/reshi/cs4370-term-project-new-spring-app/uploads/"
+                );
     }
 }

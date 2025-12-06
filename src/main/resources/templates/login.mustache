@@ -5,17 +5,40 @@
     <title>Login</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
 <div class="auth-container">
+
     <h2>Login</h2>
 
-    <input type="text" placeholder="Username">
-    <input type="password" placeholder="Password">
+    {{#error}}
+        <p class="error-message">{{error}}</p>
+    {{/error}}
 
-    <button onclick="window.location.href='/home'">Login</button>
+    <form action="/login" method="POST">
 
-    <p>No account? <a href="/register">Register here</a></p>
+        <input 
+            type="text" 
+            name="username" 
+            placeholder="Username"
+            required
+        >
+
+        <input 
+            type="password" 
+            name="password" 
+            placeholder="Password"
+            required
+        >
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p>Don’t have an account? 
+        <a href="/register" style="color:#ffcc00;">Register</a>
+    </p>
+
 </div>
 
 </body>

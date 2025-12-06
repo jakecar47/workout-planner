@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{workout.name}} - Workout Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <span class="site-name">WorkoutApp</span>
+    <div class="nav-right">
+        <img src="/img/profile.png" alt="profile">
+    </div>
+</div>
+
+<div class="page-container">
+
+    <!-- WORKOUT HEADER -->
+    <h2 class="section-title">{{workout.name}}</h2>
+
+    {{#workout.description}}
+        <p style="margin-top: 10px; color: #ccc;">{{workout.description}}</p>
+    {{/workout.description}}
+
+    <hr style="border: 1px solid #333; margin: 20px 0;">
+
+    <!-- ASSIGNED EXERCISES -->
+    <h3 class="section-title">Exercises in This Workout</h3>
+
+    {{#assignedExercises.length}}
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Exercise</th>
+                    <th>Time (sec)</th>
+                    <th>Sets</th>
+                    <th>Reps</th>
+                    <th></th>
+                </tr>
+
+                {{#assignedExercises}}
+                <tr>
+                    <td>{{exerciseName}}</td>
+                    <td>{{time}}</td>
+                    <td>{{sets}}</td>
+                    <td>{{reps}}</td>
+                    <td>
+                        <form method="POST" action="/workouts/{{workout.id}}/remove-exercise">
+                            <input type="hidden" name="exerciseId" value="{{exerciseId}}">
+                            <button class="black-button" style="padding: 6px 12px;">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/assignedExercises}}
+            </table>
+        </div>
+    {{/assignedExercises.length}}
+
+    {{^assignedExercises.length}}
+        <p style="margin-top:10px; color:#aaa;">No exercises have been added yet.</p>
+    {{/assignedExercises.length}}
+
+    <hr style="border: 1px solid #333; margin: 30px 0;">
+
+    <!-- ADD EXERCISE FORM -->
+    <h3 class="section-title">Add Exercise to Workout</h3>
+
+    <form method="POST" action="/workouts/{{workout.id}}/add-exercise"
+          style="margin-top:20px; display:flex; flex-direction:column; gap:15px;">
+
+        <div>
+            <label>Select Exercise</label><br>
+            <select name="exerciseId"
+                    style="width:100%; padding:12px; background:#2a2a2a; border-radius:6px; color:white; border:1px solid #444;">
+                {{#allExercises}}
+                    <option value="{{id}}">{{name}} ({{targetMuscle}})</option>
+                {{/allExercises}}
+            </select>
+        </div>
+
+        <div style="display:flex; gap:15px;">
+            <div style="flex:1;">
+                <label>Time (sec)</label><br>
+                <input type="number" name="time" min="0" placeholder="Optional">
+            </div>
+
+            <div style="flex:1;">
+                <label>Sets</label><br>
+                <input type="number" name="sets" min="0" placeholder="Optional">
+            </div>
+
+            <div style="flex:1;">
+                <label>Reps</label><br>
+                <input type="number" name="reps" min="0" placeholder="Optional">
+            </div>
+        </div>
+
+        <button class="black-button" type="submit">Add Exercise</button>
+    </form>
+
+    <div class="center-button" style="margin-top:30px;">
+        <a href="/workouts">
+            <button class="black-button">Back to Workouts</button>
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

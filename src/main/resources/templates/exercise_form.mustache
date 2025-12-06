@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Exercise</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <span class="site-name">Add Exercise</span>
+
+    <div class="nav-right">
+        <a href="/profile">
+            <img src="/images/default_pfp.png" alt="Profile">
+        </a>
+    </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page-container">
+
+    <h1 class="section-title">Create New Exercise</h1>
+
+    {{#error}}
+        <p class="error-message">{{error}}</p>
+    {{/error}}
+
+    <!-- ACTION + PARAM NAMES -->
+    <form action="/exercises/create" method="POST" 
+          class="auth-container" style="width:100%; max-width:500px;">
+
+        <input 
+            type="text" 
+            name="name" 
+            placeholder="Exercise Name"
+            required
+        >
+
+        <input 
+            type="text" 
+            name="targetMuscle" 
+            placeholder="Target Muscle Group (e.g. Chest, Back, Quads)"
+        >
+
+        <!-- imagePath REMOVED -->
+
+        <textarea 
+            name="description" 
+            placeholder="Describe the exercise..."
+            style="height:120px; padding:12px; border-radius:6px; background:#2a2a2a; border:1px solid #444; color:white;"
+        ></textarea>
+
+        <button type="submit">Add Exercise</button>
+
+    </form>
+
+    <!-- BACK BUTTON -->
+    <div class="center-button">
+        <button class="black-button" onclick="window.location.href='/exercises'">
+            Back to Exercises
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>
