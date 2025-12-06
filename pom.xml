@@ -22,6 +22,7 @@
         <java.version>21</java.version>
     </properties>
 
+    <!-- https://mvnrepository.com/ -->
     <dependencies>
 
         <!-- Mustache Templates -->
@@ -31,49 +32,58 @@
         </dependency>
 
         <!-- Core Web (Controllers, REST, MVC) -->
+        <!-- https://docs.spring.io/spring-boot/reference/web/index.html -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- JDBC (DataSource auto-config) -->
+        <!-- https://docs.spring.io/spring-boot/reference/data/sql.html#data.sql.datasource.configuration -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
         <!-- Spring Security (Login flow + BCrypt) -->
+        <!-- https://docs.spring.io/spring-boot/reference/web/spring-security.html -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- BCrypt password hashing -->
+        <!-- https://docs.spring.io/spring-security/reference/features/integrations/cryptography.html -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
         <!-- MySQL JDBC driver -->
+        <!-- https://dev.mysql.com/doc/connector-j/en/ -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Validation -->
+        <!-- Starter for using Java Bean Validation with Hibernate Validator -->
+        <!-- https://docs.spring.io/spring-boot/reference/io/validation.html -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- Testing -->
+        <!-- https://docs.spring.io/spring-boot/reference/testing/test-scope-dependencies.html -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Support for testing Spring Security -->
+        <!-- https://docs.spring.io/spring-security/reference/servlet/test/index.html -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
@@ -84,6 +94,8 @@
 
     <build>
         <plugins>
+            <!-- Spring Boot support in Apache Maven -->
+            <!-- https://docs.spring.io/spring-boot/maven-plugin/index.html -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

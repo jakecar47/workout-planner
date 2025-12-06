@@ -1,4 +1,7 @@
-HELP.md
+### MacOS Finder ###
+.DS_Store
+
+### mvn ###
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
