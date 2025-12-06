@@ -6,10 +6,25 @@
 </head>
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
-    <span class="site-name">WorkoutApp</span>
+    <div class="nav-left brand">
+        <a href="/" class="nav-link" alt="Home Link" style="display: flex; align-items: center; gap: 10px;">
+            <img src="/images/BoxCruncherLogo.png" class="nav-logo" alt="BoxCruncher Logo">
+            <span class="site-name">BoxCruncher</span>
+        </a>
+    </div>
+
+    <div class="nav-center">
+        <a href="/workouts" class="nav-link">Workouts</a>
+        <a href="/exercises" class="nav-link">Exercises</a>
+    </div>
+
     <div class="nav-right">
-        <img src="/img/profile.png" alt="profile">
+        <a href="/profile" class="profile-link">
+            <img src="/images/ProfilePicture.png" class="profile-pic">
+            <span class="profile-name">{{user.uname}}</span>
+        </a>
     </div>
 </div>
 

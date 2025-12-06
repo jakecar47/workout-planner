@@ -10,11 +10,22 @@
 
 <!-- NAVBAR -->
 <div class="navbar">
-    <span class="site-name">Profile</span>
+    <div class="nav-left brand">
+        <a href="/" class="nav-link" alt="Home Link" style="display: flex; align-items: center; gap: 10px;">
+            <img src="/images/BoxCruncherLogo.png" class="nav-logo" alt="BoxCruncher Logo">
+            <span class="site-name">BoxCruncher</span>
+        </a>
+    </div>
+
+    <div class="nav-center">
+        <a href="/workouts" class="nav-link">Workouts</a>
+        <a href="/exercises" class="nav-link">Exercises</a>
+    </div>
 
     <div class="nav-right">
-        <a href="/home">
-            <img src="/images/default_pfp.png" alt="Profile">
+        <a href="/profile" class="profile-link">
+            <img src="/images/ProfilePicture.png" class="profile-pic">
+            <span class="profile-name">{{user.uname}}</span>
         </a>
     </div>
 </div>
@@ -24,7 +35,7 @@
 
     <!-- PROFILE PICTURE -->
     <div class="profile-center">
-        <img src="/images/default_pfp.png" alt="User Profile">
+        <img src="/images/ProfilePicture.png" class="profile-pic">
     </div>
 
     <!-- USERNAME -->
@@ -37,18 +48,62 @@
 
     <div class="table-container">
         <table>
-            <thead>
+             <thead>
                 <tr>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-
             <tbody>
             {{#goals}}
                 <tr>
                     <td>{{description}}</td>
                     <td>
-                        <!-- Hardcoded "No" until goal completion is implemented -->
-                        <span style="color:#ffcc00; font-weight:bold;">In Progress</span>
+                        {{#completed}}
+                            <span style="color:#7ed957; font-weight:600;">Complete</span>
+                        {{/completed}}
+                        {{^completed}}
+                            <span style="color:#ffcc00; font-weight:600;">In Progress</span>
+                        {{/completed}}
                     </td>
+                    <td>
+                        <!-- Toggle complete/incomplete -->
+                        <form action="/goals/toggle/{{id}}" method="POST" style="display:inline;margin-right:8px;">
+                            <button type="submit" class="black-button" style="padding:6px 10px; font-size:0.9rem;">
+                                {{#completed}}Mark Incomplete{{/completed}}{{^completed}}Mark Complete{{/completed}}
+                            </button>
+                        </form>
+
+                        <!-- Delete goal -->
+                        <form action="/goals/delete/{{id}}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this goal?');">
+                            <button type="submit" class="black-button" style="background:#cc4a4a; padding:6px 10px; font-size:0.9rem;">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {{/goals}}
+
+            {{^goals}}
+                <tr>
+                    <td colspan="3" style="text-align:center; color:#ccc;">
+                        No goals yet. Set one!
+                    </td>
+                </tr>
+            {{/goals}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ADD GOAL BUTTON -->
+    <div class="center-button mt-20">
+        <button class="black-button" onclick="window.location.href='/goals/new'">
+            Add Goal
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>
