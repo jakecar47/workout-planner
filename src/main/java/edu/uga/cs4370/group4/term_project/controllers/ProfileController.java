@@ -1,9 +1,12 @@
 package edu.uga.cs4370.group4.term_project.controllers;
 
+import edu.uga.cs4370.group4.term_project.models.Goal;
 import edu.uga.cs4370.group4.term_project.models.User;
 import edu.uga.cs4370.group4.term_project.services.UserService;
 import edu.uga.cs4370.group4.term_project.services.GoalService;
 import edu.uga.cs4370.group4.term_project.services.ExerciseService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

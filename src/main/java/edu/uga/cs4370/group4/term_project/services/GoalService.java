@@ -46,40 +46,47 @@ public class GoalService {
     }
 
     /** ---------------------------------------------------------
-     * GET ALL GOALS FOR A USER
+     * GET GOALS FOR USER
      * --------------------------------------------------------- */
     public List<Goal> getGoalsForUser(int userId) {
-        List<Goal> list = new ArrayList<>();
-
-        String sql =
-            "SELECT id, description, user_id, exercise_id, created_at " +
-            "FROM goals WHERE user_id = ? ORDER BY created_at DESC";
-
+        List<Goal> goals = new ArrayList<>();
+        // sort completed (1/true) first, then newest created_at
+        String sql = "SELECT id, user_id, description, completed, created_at " +
+                     "FROM goals WHERE user_id = ? " +
+                     "ORDER BY COALESCE(completed, 0) DESC, created_at DESC";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, userId);
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-
-                    Goal g = new Goal(
-                            rs.getInt("id"),
-                            rs.getString("description"),
-                            rs.getInt("user_id"),
-                            rs.getObject("exercise_id", Integer.class),
-                            rs.getTimestamp("created_at").toString()   
-                    );
-
-                    list.add(g);
+                    Goal g = new Goal();
+                    g.setId(rs.getInt("id"));
+                    g.setUserId(rs.getInt("user_id"));
+                    g.setDescription(rs.getString("description"));
+                    g.setCompleted(rs.getBoolean("completed"));
+                    g.setCreatedAt(rs.getTimestamp("created_at").toString());
+                    goals.add(g);
                 }
             }
-
         } catch (SQLException e) {
-            System.out.println("Error retrieving goals: " + e.getMessage());
+            e.printStackTrace();
         }
+        return goals;
+    }
 
-        return list;
+    // Toggle completion state for a goal (only if it belongs to the user)
+    public boolean toggleGoalCompletion(int goalId, int userId) {
+        String sql = "UPDATE goals SET completed = NOT IFNULL(completed, 0) WHERE id = ? AND user_id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, goalId);
+            ps.setInt(2, userId);
+            int updated = ps.executeUpdate();
+            return updated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /** ---------------------------------------------------------
@@ -87,7 +94,7 @@ public class GoalService {
      * --------------------------------------------------------- */
     public Goal getGoalById(int goalId) {
         String sql =
-            "SELECT id, description, user_id, exercise_id, created_at " +
+            "SELECT id, description, user_id, exercise_id, created_at, completed " +
             "FROM goals WHERE id = ?";
 
         try (Connection conn = dataSource.getConnection();

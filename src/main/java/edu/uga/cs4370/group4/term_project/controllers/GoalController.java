@@ -39,30 +39,48 @@ public class GoalController {
         return "goals";
     }
 
-    /* ------------------------------------------------------
-     * CREATE GOAL
-     * ------------------------------------------------------ */
-    @PostMapping("/goals/create")
-    public String createGoal(@RequestParam String description,
-                             @RequestParam(required = false) Integer exerciseId) {
-
+    // Toggle complete/incomplete handler
+    @PostMapping("/goals/toggle/{id}")
+    public String toggleGoal(@PathVariable("id") int id) {
         if (!userService.isAuthenticated()) {
             return "redirect:/login";
         }
-
-        if (description == null || description.isBlank()) {
-            return "redirect:/profile";
+        User user = userService.getLoggedInUser();
+        if (user == null) {
+            return "redirect:/login";
         }
 
-        User user = userService.getLoggedInUser();
-
-        goalService.createGoal(
-                user.getId(),
-                description.trim(),
-                exerciseId
-        );
-
+        goalService.toggleGoalCompletion(id, user.getId());
         return "redirect:/profile";
+    }
+    
+    /* ------------------------------------------------------
+     * CREATE GOAL
+     * ------------------------------------------------------ */
+    @PostMapping("/goals/new")
+    public String createGoal(@RequestParam("description") String description,
+                         @RequestParam(value = "exerciseId", required = false) Integer exerciseId,
+                         Model model) {
+        User user = userService.getLoggedInUser();
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        if (description == null || description.trim().isEmpty()) {
+            model.addAttribute("error", "Description is required");
+            model.addAttribute("user", user);
+            return "goal_form";
+        }
+
+        boolean success = goalService.createGoal(user.getId(), description.trim(), exerciseId);
+        
+        if (success) {
+            return "redirect:/profile";
+        } else {
+            model.addAttribute("error", "Failed to create goal");
+            model.addAttribute("user", user);
+            return "goal_form";
+        }
     }
 
     /* ------------------------------------------------------
@@ -78,4 +96,17 @@ public class GoalController {
         goalService.deleteGoal(id);
         return "redirect:/profile";
     }
+
+    /* ------------------------------------------------------
+     * SHOW ADD GOAL FORM
+     * ------------------------------------------------------ */
+    @GetMapping("/goals/new")
+    public String showAddGoalForm(Model model) {
+        if (!userService.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", userService.getLoggedInUser());
+        return "goal_form";
+    }
+
 }

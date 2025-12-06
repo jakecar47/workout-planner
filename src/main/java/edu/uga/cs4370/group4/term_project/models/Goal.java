@@ -7,6 +7,7 @@ public class Goal {
     private int userId;
     private Integer exerciseId; 
     private String createdAt;   // store timestamp as String
+    private boolean completed;
 
     // ---------- Constructors ----------
     public Goal() { }
@@ -22,13 +23,15 @@ public class Goal {
         this.userId = userId;
         this.exerciseId = exerciseId;
         this.createdAt = createdAt;
+        this.completed = false;
     }
 
     // Constructor for creating new goals 
-    public Goal(String description, int userId, Integer exerciseId) {
+    public Goal(String description, int userId, Integer exerciseId, boolean completed) {
         this.description = description;
         this.userId = userId;
         this.exerciseId = exerciseId;
+        this.completed = completed;
     }
 
     // ---------- Getters & Setters ----------
@@ -70,5 +73,13 @@ public class Goal {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }
