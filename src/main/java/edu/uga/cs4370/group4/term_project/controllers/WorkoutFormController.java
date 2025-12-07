@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.uga.cs4370.group4.term_project.services.WorkoutService;
 import edu.uga.cs4370.group4.term_project.services.UserService;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 /**
@@ -35,7 +37,10 @@ public class WorkoutFormController {
      * Serves the webpage at /workout_form URL.
      */
     @GetMapping
-    public String webpage(Model mode) {
+    public String webpage(Model model,
+                          @RequestParam(value = "error", required = false) String error) {
+
+        model.addAttribute("error", error);
 
         return "workout_form";
     }
@@ -50,12 +55,21 @@ public class WorkoutFormController {
                                  @RequestParam("startTime") String startTime,
                                  @RequestParam("endTime") String endTime) {
         // Logic to save the new workout using workoutService
-
+        System.out.println("postNewWorkout() called");
         int currentUserId = userService.getLoggedInUser().getId();
+        String currentUserName = userService.getLoggedInUser().getUname();
         String now = LocalDateTime.parse(startTime).toString();
         String end = LocalDateTime.parse(endTime).toString();
-        workoutService.createWorkout(name, currentUserId, description, now, end);
-
+        System.out.println(currentUserName + "(" + currentUserId + ")" + " is attempting to create a new workout: " + name 
+                           + ", " + description + ", " + now + " to " + end);
+        try {
+            workoutService.createWorkout(name, currentUserId, description, now, end);
+        } catch (Exception e) {
+            System.out.println("Error creating workout: " + e.getMessage());
+            String errorMessage = URLEncoder.encode("Error creating workout: ", StandardCharsets.UTF_8);
+            return "redirect:/workout_form?error=" + errorMessage;
+        }
+        
         // Redirect to workouts page after successful creation
         return "redirect:/workouts";
 
