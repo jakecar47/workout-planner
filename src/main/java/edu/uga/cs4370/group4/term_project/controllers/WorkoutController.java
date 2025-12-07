@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,45 +57,47 @@ public class WorkoutController {
         return "workouts";
     }
 
-    // /* ------------------------------------------------------
-    //  * SHOW CREATE WORKOUT FORM
-    //  * ------------------------------------------------------ */
-    // @GetMapping("/workouts/new")
-    // public String newWorkoutPage() {
+     /**
+     * Serves the webpage at /workout_form URL.
+     */
+    @GetMapping("/workout_form")
+    public String webpage(Model model,
+                          @RequestParam(value = "error", required = false) String error) {
 
-    //     if (!userService.isAuthenticated()) {
-    //         return "redirect:/login";
-    //     }
+        model.addAttribute("error", error);
 
-    //     return "workout_form";
-    // }
+        return "workout_form";
+    }
 
-    // /* ------------------------------------------------------
-    //  * CREATE WORKOUT
-    //  * ------------------------------------------------------ */
-    // @PostMapping("/workouts/create")
-    // public String createWorkout(@RequestParam String name,
-    //                              @RequestParam(required = false) String description) {
+    /**
+     * Handles POST requests to /workout_form.
+     * startTime and endTime would be given for a past workout(?).
+     */
+    @PostMapping("/workout_form")
+    public String postNewWorkout(@RequestParam("name") String name,
+                                 @RequestParam("description") String description,
+                                 @RequestParam("startTime") String startTime,
+                                 @RequestParam("endTime") String endTime) {
+        // Logic to save the new workout using workoutService
+        System.out.println("postNewWorkout() called");
+        int currentUserId = userService.getLoggedInUser().getId();
+        String currentUserName = userService.getLoggedInUser().getUname();
+        String now = LocalDateTime.parse(startTime).toString();
+        String end = LocalDateTime.parse(endTime).toString();
+        System.out.println(currentUserName + "(" + currentUserId + ")" + " is attempting to create a new workout: " + name 
+                           + ", " + description + ", " + now + " to " + end);
+        try {
+            workoutService.createWorkout(name, currentUserId, description, now, end);
+        } catch (Exception e) {
+            System.out.println("Error creating workout: " + e.getMessage());
+            String errorMessage = URLEncoder.encode("Error creating workout: ", StandardCharsets.UTF_8);
+            return "redirect:/workout_form?error=" + errorMessage;
+        }
+        
+        // Redirect to workouts page after successful creation
+        return "redirect:/workouts";
 
-    //     if (!userService.isAuthenticated()) {
-    //         return "redirect:/login";
-    //     }
-
-    //     User user = userService.getLoggedInUser();
-
-    //     // Convert to STRING instead of Timestamp
-    //     String now = LocalDateTime.now().toString();
-
-    //     workoutService.createWorkout(
-    //             name.trim(),
-    //             user.getId(),
-    //             description == null ? null : description.trim(),
-    //             now,
-    //             null
-    //     );
-
-    //     return "redirect:/workouts";
-    // }
+    }
 
     /* ------------------------------------------------------
      * WORKOUT DETAILS PAGE
