@@ -48,6 +48,7 @@
             </thead>
 
             <tbody>
+                <!-- Iterates through items in workouts -->
                 {{#workouts}}
                 <tr>
                     <td>{{name}}</td>
@@ -77,7 +78,7 @@
 
     <!-- ADD WORKOUT BUTTON -->
     <div class="center-button">
-        <button class="black-button" onclick="window.location.href='/workouts/new'">
+        <button class="black-button" onclick="window.location.href='/workout_form'">
             Add Workout
         </button>
     </div>

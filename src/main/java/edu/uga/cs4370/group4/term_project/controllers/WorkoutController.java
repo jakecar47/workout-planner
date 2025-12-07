@@ -55,45 +55,45 @@ public class WorkoutController {
         return "workouts";
     }
 
-    /* ------------------------------------------------------
-     * SHOW CREATE WORKOUT FORM
-     * ------------------------------------------------------ */
-    @GetMapping("/workouts/new")
-    public String newWorkoutPage() {
+    // /* ------------------------------------------------------
+    //  * SHOW CREATE WORKOUT FORM
+    //  * ------------------------------------------------------ */
+    // @GetMapping("/workouts/new")
+    // public String newWorkoutPage() {
 
-        if (!userService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    //     if (!userService.isAuthenticated()) {
+    //         return "redirect:/login";
+    //     }
 
-        return "workout_new";
-    }
+    //     return "workout_form";
+    // }
 
-    /* ------------------------------------------------------
-     * CREATE WORKOUT
-     * ------------------------------------------------------ */
-    @PostMapping("/workouts/create")
-    public String createWorkout(@RequestParam String name,
-                                 @RequestParam(required = false) String description) {
+    // /* ------------------------------------------------------
+    //  * CREATE WORKOUT
+    //  * ------------------------------------------------------ */
+    // @PostMapping("/workouts/create")
+    // public String createWorkout(@RequestParam String name,
+    //                              @RequestParam(required = false) String description) {
 
-        if (!userService.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    //     if (!userService.isAuthenticated()) {
+    //         return "redirect:/login";
+    //     }
 
-        User user = userService.getLoggedInUser();
+    //     User user = userService.getLoggedInUser();
 
-        // Convert to STRING instead of Timestamp
-        String now = LocalDateTime.now().toString();
+    //     // Convert to STRING instead of Timestamp
+    //     String now = LocalDateTime.now().toString();
 
-        workoutService.createWorkout(
-                name.trim(),
-                user.getId(),
-                description == null ? null : description.trim(),
-                now,
-                null
-        );
+    //     workoutService.createWorkout(
+    //             name.trim(),
+    //             user.getId(),
+    //             description == null ? null : description.trim(),
+    //             now,
+    //             null
+    //     );
 
-        return "redirect:/workouts";
-    }
+    //     return "redirect:/workouts";
+    // }
 
     /* ------------------------------------------------------
      * WORKOUT DETAILS PAGE
