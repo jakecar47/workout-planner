@@ -78,16 +78,39 @@ public class WorkoutController {
                                  @RequestParam("description") String description,
                                  @RequestParam("startTime") String startTime,
                                  @RequestParam("endTime") String endTime) {
-        // Logic to save the new workout using workoutService
         System.out.println("postNewWorkout() called");
         int currentUserId = userService.getLoggedInUser().getId();
         String currentUserName = userService.getLoggedInUser().getUname();
-        String now = LocalDateTime.parse(startTime).toString();
-        String end = LocalDateTime.parse(endTime).toString();
-        System.out.println(currentUserName + "(" + currentUserId + ")" + " is attempting to create a new workout: " + name 
-                           + ", " + description + ", " + now + " to " + end);
-        try {
-            workoutService.createWorkout(name, currentUserId, description, now, end);
+        String now = "";
+        if (!startTime.equals("")) {
+            System.out.println("startTime: " + startTime);
+            now = LocalDateTime.parse(startTime).toString();
+        } 
+        String end = "";
+        if (!endTime.equals("")) {
+            System.out.println("endTime: " + endTime);
+            end = LocalDateTime.parse(endTime).toString();
+        }
+        // call to workoutService to create workout
+        Boolean success = false;
+        try { 
+            if (now.equals("") && end.equals("")) {
+                System.out.println(currentUserName + "(" + currentUserId + ")" + " is attempting to create a new workout: " + name 
+                    + ", " + description);
+                if (workoutService.createWorkout(name, currentUserId, description)) {
+                    success = true;
+                }
+                
+            } else {
+                System.out.println(currentUserName + "(" + currentUserId + ")" + " is attempting to create a new workout: " + name 
+                    + ", " + description + ", " + now + " to " + end);
+                if (workoutService.createWorkout(name, currentUserId, description, now, end)) {
+                    success = true;
+                }
+            }
+            if (success) {
+                System.out.println("Workout created successfully");
+            }
         } catch (Exception e) {
             System.out.println("Error creating workout: " + e.getMessage());
             String errorMessage = URLEncoder.encode("Error creating workout: ", StandardCharsets.UTF_8);

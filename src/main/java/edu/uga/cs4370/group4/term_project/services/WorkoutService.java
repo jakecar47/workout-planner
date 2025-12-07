@@ -25,6 +25,7 @@ public class WorkoutService {
     public boolean createWorkout(String name, int userId, String description,
                                  String startTime, String endTime) {
 
+        System.out.println("createWorkout() called with startTime/endTime");
         String sql = "INSERT INTO workouts (name, user_id, description, startTime, endTime) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = dataSource.getConnection();
@@ -35,6 +36,29 @@ public class WorkoutService {
             ps.setString(3, description);
             ps.setString(4, startTime);
             ps.setString(5, endTime);
+
+            ps.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println("Error creating workout: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * createWorkout overload without startTime and endTime
+     */
+    public boolean createWorkout(String name, int userId, String description) {
+
+        System.out.println("createWorkout() called without startTime/endTime");
+        String sql = "INSERT INTO workouts (name, user_id, description) VALUES (?, ?, ?)";
+
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setInt(2, userId);
+            ps.setString(3, description);
 
             ps.executeUpdate();
             return true;
