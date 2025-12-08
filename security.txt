@@ -1,2 +1,6 @@
-security.txt describes the approach you used to securely store user passwords.
----
+The approach that we used to store passwords is the same exact approach that was used in Project 2. 
+We used the BCrypt password hashing algorithm, which generates a random salt and does an expensive one-way hash function.
+This ensures that if two users choose the same password, the stored password hashes will still be different.
+During registration, BCrypt hashes the password and stores the hash in the database.
+During login, we use the matches() function, which hashes the supplied password and compares it to the stored hash.
+This ensures that common password-theft techniques do not work and the passwords cannot be reversed or recovered from the stored data.
