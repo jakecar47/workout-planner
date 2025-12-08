@@ -53,8 +53,8 @@
                 <tr>
                     <td>{{name}}</td>
                     <td>{{description}}</td>
-                    <td>{{startTime}}</td>
-                    <td>{{endTime}}</td>
+                    <td>{{#startTime}}{{startTime}}{{/startTime}}</td>
+                    <td>{{#endTime}}{{endTime}}{{/endTime}}</td>
                     <td>
                         <form action="/workouts/delete/{{id}}" method="POST" style="display:inline;">
                             <button class="black-button" style="padding:8px 12px;">
