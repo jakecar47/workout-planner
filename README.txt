@@ -9,7 +9,19 @@ Reshi Manivannan
  - 
 
 How to run:
-1. mvn spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"
+1. 
+On unix like machines:
+mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dserver.port=8081'
+
+On windows command line:
+mvn spring-boot:run -D"spring-boot.run.arguments=--server.port=8081"
+
+On windows power shell:
+mvn spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"
+
+2.
+Open the browser and navigate to the following URL:
+http://localhost:8081/
 
 Technologies used:
  - Java
