@@ -29,13 +29,13 @@ username:root
 password:mysqlpass
 
 Test Account 1:
-username:
-password:
+username: john
+password: pass123
 
 Test Account 2:
-username:
-password:
+username: sarah
+password: pass123
 
 Test Account 3:
-username:
-password:
+username: alex
+password: pass123
