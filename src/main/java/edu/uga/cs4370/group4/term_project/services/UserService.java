@@ -3,19 +3,24 @@ package edu.uga.cs4370.group4.term_project.services;
 import edu.uga.cs4370.group4.term_project.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.annotation.SessionScope;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
 @Service
+@SessionScope
 public class UserService {
 
     private final DataSource dataSource;
-    private User loggedInUser;
+    private User loggedInUser = null;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(DataSource dataSource) {
         this.dataSource = dataSource;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     /** ---------------------------
@@ -29,7 +34,7 @@ public class UserService {
 
             ps.setString(1, email);
             ps.setString(2, username);
-            ps.setString(3, password);
+            ps.setString(3, passwordEncoder.encode(password));
 
             ps.executeUpdate();
             return true;
@@ -55,18 +60,19 @@ public class UserService {
 
                 if (!rs.next()) return false;
 
-                String storedPassword = rs.getString("password");
-                if (!storedPassword.equals(password)) return false;
+                String storedPasswordHash = rs.getString("password");
+                boolean isPassMatch = passwordEncoder.matches(password, storedPasswordHash);
+                if (!isPassMatch) return false;
 
                 loggedInUser = new User(
                         rs.getInt("id"),
                         rs.getString("email"),
                         rs.getString("uname"),
-                        storedPassword,
+                        null,
                         rs.getTimestamp("created_at").toString()   
                 );
 
-                return true;
+                return isPassMatch;
             }
 
         } catch (SQLException e) {
