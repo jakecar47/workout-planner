@@ -8,27 +8,7 @@
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <div class="nav-left brand">
-        <a href="/" class="nav-link" alt="Home Link" style="display: flex; align-items: center; gap: 10px;">
-            <img src="/images/BoxCruncherLogo.png" class="nav-logo" alt="BoxCruncher Logo">
-            <span class="site-name">BoxCruncher</span>
-        </a>
-    </div>
-
-    <div class="nav-center">
-        <a href="/workouts" class="nav-link">Workouts</a>
-        <a href="/exercises" class="nav-link">Exercises</a>
-    </div>
-
-    <div class="nav-right">
-        <a href="/profile" class="profile-link">
-            <img src="/images/ProfilePicture.png" class="profile-pic">
-            <span class="profile-name">{{user.uname}}</span>
-        </a>
-    </div>
-</div>
+{{> fragments/nav_bar}}
 
 <!-- PAGE CONTENT -->
 <div class="page-container">
@@ -48,16 +28,22 @@
             </thead>
 
             <tbody>
+                <!-- Iterates through items in workouts -->
                 {{#workouts}}
                 <tr>
                     <td>{{name}}</td>
                     <td>{{description}}</td>
-                    <td>{{startTime}}</td>
-                    <td>{{endTime}}</td>
+                    <td>{{#startTime}}{{startTime}}{{/startTime}}</td>
+                    <td>{{#endTime}}{{endTime}}{{/endTime}}</td>
                     <td>
                         <form action="/workouts/delete/{{id}}" method="POST" style="display:inline;">
                             <button class="black-button" style="padding:8px 12px;">
                                 Delete
+                            </button>
+                        </form>
+                        <form action="/workouts/{{id}}" method="GET" style="display:inline;">
+                            <button class="black-button" style="padding:8px 12px;">
+                                View
                             </button>
                         </form>
                     </td>
@@ -77,7 +63,7 @@
 
     <!-- ADD WORKOUT BUTTON -->
     <div class="center-button">
-        <button class="black-button" onclick="window.location.href='/workouts/new'">
+        <button class="black-button" onclick="window.location.href='/workout_form'">
             Add Workout
         </button>
     </div>

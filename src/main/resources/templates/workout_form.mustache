@@ -23,13 +23,15 @@
 <!-- PAGE CONTENT -->
 <div class="page-container">
 
+    {{> fragments/nav_bar}}
+
     <h1 class="section-title">Create New Workout</h1>
 
     {{#error}}
         <p class="error-message">{{error}}</p>
     {{/error}}
 
-    <form action="/workouts/new" method="POST" class="auth-container" style="width:100%; max-width:500px;">
+    <form action="/workout_form" method="POST" class="auth-container" style="width:100%; max-width:500px;">
 
         <!-- WORKOUT NAME -->
         <input 

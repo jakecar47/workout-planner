@@ -38,13 +38,13 @@ INSERT INTO exercises (id, name, target_muscle, description) VALUES
 -- ==========================
 -- WORKOUTS (VALID USERS)
 -- ==========================
-INSERT INTO workouts (id, user_id, name, description) VALUES
-(1, 1, 'Chest Day', 'Bench-focused upper body session'),
-(2, 1, 'Leg Day', 'Lower-body strengthening routine'),
-(3, 1, 'Back Day', 'All pulling movements'),
-(4, 2, 'Full Body A', 'Balanced workout'),
-(5, 2, 'Full Body B', 'Alternate full-body session'),
-(6, 3, 'Arms and Shoulders', 'Upper arm isolation');
+INSERT INTO workouts (id, user_id, name, description, startTime, endTime, created_at) VALUES
+(1, 1, 'Chest Day', 'Bench-focused upper body session', '2025-12-01 08:00:00', '2025-12-01 09:30:00', '2025-12-01 07:45:00'),
+(2, 1, 'Leg Day', 'Lower-body strengthening routine', '2025-12-02 10:00:00', '2025-12-02 11:45:00', '2025-12-02 09:50:00'),
+(3, 1, 'Back Day', 'All pulling movements', '2025-12-03 17:00:00', '2025-12-03 18:30:00', '2025-12-03 16:45:00'),
+(4, 2, 'Full Body A', 'Balanced workout', '2025-12-04 06:30:00', '2025-12-04 08:00:00', '2025-12-04 06:15:00'),
+(5, 2, 'Full Body B', 'Alternate full-body session', '2025-12-05 18:30:00', '2025-12-05 20:00:00', '2025-12-05 18:15:00'),
+(6, 3, 'Arms and Shoulders', 'Upper arm isolation', '2025-12-06 14:00:00', '2025-12-06 15:30:00', '2025-12-06 13:45:00');
 
 -- ==========================
 -- WORKOUT_EXERCISES (BASE)
@@ -81,12 +81,15 @@ INSERT INTO goals (user_id, description) VALUES
 -- ==========================
 -- DUMMY WORKOUTS FOR LARGE DATASET (50–150)
 -- ==========================
-INSERT INTO workouts (id, user_id, name, description)
+INSERT INTO workouts (id, user_id, name, description, startTime, endTime, created_at)
 SELECT
     seq.num,
     1,
     CONCAT('Auto Workout ', seq.num),
-    'Synthetic dataset workout'
+    'Synthetic dataset workout',
+    DATE_ADD('2025-12-01', INTERVAL FLOOR(RAND()*30) DAY),
+    DATE_ADD('2025-12-01', INTERVAL FLOOR(RAND()*30) DAY),
+    NOW()
 FROM (
     SELECT @row := @row + 1 AS num
     FROM information_schema.tables, (SELECT @row := 49) r
