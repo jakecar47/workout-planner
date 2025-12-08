@@ -67,6 +67,13 @@ public class WorkoutController {
     public String webpage(Model model,
                           @RequestParam(value = "error", required = false) String error) {
 
+        if (!userService.isAuthenticated()) {
+            return "redirect:/login";
+        }
+
+        User user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+
         model.addAttribute("error", error);
 
         return "workout_form";
