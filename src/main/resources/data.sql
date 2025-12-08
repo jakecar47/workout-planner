@@ -6,9 +6,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- USERS
 -- ==========================
 INSERT INTO users (email, uname, password) VALUES
-('john@example.com', 'john', 'pass123'),
-('sarah@example.com', 'sarah', 'pass123'),
-('alex@example.com', 'alex', 'pass123');
+('john@example.com', 'john', '$2a$10$0jexVrmb4tBmDdYcvLNeXeChudiALhS9PTwsLJMFPXV.gQsrD6iHW'),
+('sarah@example.com', 'sarah', '$2a$10$V8qpG30QGkS7NF2SCCBdDO.JWCPVcERHfQqejO.NpP1CYILNFK/ou'),
+('alex@example.com', 'alex', '$2a$10$AlW8dxharaMhyjgNULMd5OgP50ceJtBsmCTjEPmtnfk1BLvbUmayG');
 
 -- ==========================
 -- EXERCISES (20 base exercises)
