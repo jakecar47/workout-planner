@@ -1,7 +1,9 @@
 package edu.uga.cs4370.group4.term_project.controllers;
 
+import edu.uga.cs4370.group4.term_project.models.Exercise;
 import edu.uga.cs4370.group4.term_project.models.User;
 import edu.uga.cs4370.group4.term_project.models.Workout;
+import edu.uga.cs4370.group4.term_project.models.WorkoutExercise;
 import edu.uga.cs4370.group4.term_project.services.UserService;
 import edu.uga.cs4370.group4.term_project.services.WorkoutService;
 import edu.uga.cs4370.group4.term_project.services.WorkoutExerciseService;
@@ -16,6 +18,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 public class WorkoutController {
@@ -137,12 +140,14 @@ public class WorkoutController {
             return "redirect:/workouts";
         }
 
+        List<WorkoutExercise> weList = workoutExerciseService.getExercisesForWorkout(id);
+        for (WorkoutExercise we : weList) {
+            System.out.println(we);
+        }
+        List<Exercise> allExercises = exerciseService.getAllExercises();
         model.addAttribute("workout", workout);
-        model.addAttribute("workoutExercises",
-                workoutExerciseService.getExercisesForWorkout(id));
-
-        model.addAttribute("allExercises",
-                exerciseService.getAllExercises());
+        model.addAttribute("assignedExercises", weList);
+        model.addAttribute("allExercises", allExercises);
 
         return "workout_details";
     }

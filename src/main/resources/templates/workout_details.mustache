@@ -7,7 +7,7 @@
 <body>
 
 <div class="navbar">
-    <span class="site-name">WorkoutApp</span>
+    <span class="site-name">BoxCruncher</span>
     <div class="nav-right">
         <img src="/img/profile.png" alt="profile">
     </div>
@@ -27,7 +27,6 @@
     <!-- ASSIGNED EXERCISES -->
     <h3 class="section-title">Exercises in This Workout</h3>
 
-    {{#assignedExercises.length}}
         <div class="table-container">
             <table>
                 <tr>
@@ -41,9 +40,9 @@
                 {{#assignedExercises}}
                 <tr>
                     <td>{{exerciseName}}</td>
-                    <td>{{time}}</td>
-                    <td>{{sets}}</td>
-                    <td>{{reps}}</td>
+                    <td>{{#time}}{{time}}{{/time}}</td>
+                    <td>{{#sets}}{{sets}}{{/sets}}</td>
+                    <td>{{#reps}}{{reps}}{{/reps}}</td>
                     <td>
                         <form method="POST" action="/workouts/{{workout.id}}/remove-exercise">
                             <input type="hidden" name="exerciseId" value="{{exerciseId}}">
@@ -54,11 +53,10 @@
                 {{/assignedExercises}}
             </table>
         </div>
-    {{/assignedExercises.length}}
 
-    {{^assignedExercises.length}}
+    {{^assignedExercises}}
         <p style="margin-top:10px; color:#aaa;">No exercises have been added yet.</p>
-    {{/assignedExercises.length}}
+    {{/assignedExercises}}
 
     <hr style="border: 1px solid #333; margin: 30px 0;">
 
