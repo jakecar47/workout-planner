@@ -157,7 +157,8 @@ public class WorkoutController {
     }
 
     /* ------------------------------------------------------
-     * ADD EXERCISE TO WORKOUT
+     * Handles POST add exercise to /workouts/{id}/add-exercise.
+     * After adding, redirects back to /workouts/{id}.
      * ------------------------------------------------------ */
     @PostMapping("/workouts/{id}/add-exercise")
     public String addExerciseToWorkout(@PathVariable int id,

@@ -51,6 +51,7 @@ public class ExerciseService {
      * GET ALL EXERCISES 
      * ----------------------------------------- */
     public List<Exercise> getAllExercises() {
+        System.out.println("getAllExercises() called");
         List<Exercise> exercises = new ArrayList<>();
 
         String sql = """

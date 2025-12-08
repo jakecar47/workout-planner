@@ -35,6 +35,7 @@ create table if not exists exercises (
     id int auto_increment,
     name varchar(255) not null,
     target_muscle varchar(255),
+    image_path varchar(255),
     description text,
     primary key(id),
     unique(name)

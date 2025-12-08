@@ -26,6 +26,9 @@ public class HomeController {
         this.exerciseService = exerciseService;
     }
 
+    /*
+    * Serves the root webpage URL.
+    */
     @GetMapping("/")
     public String homePage(Model model) {
 
