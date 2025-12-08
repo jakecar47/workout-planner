@@ -40,7 +40,7 @@ public class WorkoutController {
     }
 
     /* ------------------------------------------------------
-     * LIST USER WORKOUTS
+     * Serves the webapage at /workouts URL.
      * ------------------------------------------------------ */
     @GetMapping("/workouts")
     public String workoutsPage(Model model) {
@@ -74,7 +74,7 @@ public class WorkoutController {
 
     /**
      * Handles POST requests to /workout_form.
-     * startTime and endTime would be given for a past workout(?).
+     * Redirects to /workouts upon successful creation.
      */
     @PostMapping("/workout_form")
     public String postNewWorkout(@RequestParam("name") String name,
@@ -126,7 +126,7 @@ public class WorkoutController {
     }
 
     /* ------------------------------------------------------
-     * WORKOUT DETAILS PAGE
+     * Serves webpage for /workouts/{id} URL.
      * ------------------------------------------------------ */
     @GetMapping("/workouts/{id}")
     public String workoutDetails(@PathVariable int id, Model model) {
@@ -135,15 +135,19 @@ public class WorkoutController {
             return "redirect:/login";
         }
 
+        User user = userService.getLoggedInUser();
+        model.addAttribute("user", user);
+
         Workout workout = workoutService.getWorkoutById(id);
         if (workout == null) {
             return "redirect:/workouts";
         }
 
         List<WorkoutExercise> weList = workoutExerciseService.getExercisesForWorkout(id);
-        for (WorkoutExercise we : weList) {
-            System.out.println(we);
-        }
+        // System.out.println("Exercises in workout " + id + ":");
+        // for (WorkoutExercise we : weList) {
+        //     System.out.println(we.getExerciseName());
+        // }
         List<Exercise> allExercises = exerciseService.getAllExercises();
         model.addAttribute("workout", workout);
         model.addAttribute("assignedExercises", weList);
@@ -174,16 +178,17 @@ public class WorkoutController {
     }
 
     /* ------------------------------------------------------
-     * REMOVE EXERCISE FROM WORKOUT
+     * Handles POST remove exercise from /workouts/{id}/remove-exercise
      * ------------------------------------------------------ */
-    @PostMapping("/workouts/{id}/remove-exercise/{exerciseId}")
+    @PostMapping("/workouts/{id}/remove-exercise")
     public String removeExerciseFromWorkout(@PathVariable int id,
-                                             @PathVariable int exerciseId) {
+                                             @RequestParam int exerciseId) {
 
         if (!userService.isAuthenticated()) {
             return "redirect:/login";
         }
 
+        System.out.println("Removing exercise " + exerciseId + " from workout " + id);
         workoutExerciseService.removeExercise(id, exerciseId);
 
         return "redirect:/workouts/" + id;
