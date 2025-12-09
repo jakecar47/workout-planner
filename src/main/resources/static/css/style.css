@@ -620,10 +620,11 @@ table tr:hover {
 }
 
 .black-button.danger {
-    background: #444;
+    background:#cc4a4a; 
+    padding:6px 10px;
 }
 .black-button.danger:hover {
-    background: #666;
+    background: #cc4a4ad9;
 }
 
 /* GLOBAL RESET / BASE (additional adjustments for mustache templates) */
@@ -721,7 +722,7 @@ body {
 }
 
 .assigned-display .workout-link {
-  color: #ffcc00 !important;
+  color: #3dff89 !important;
   font-weight: 700;
   text-decoration: none !important;
   background: transparent;
@@ -734,7 +735,7 @@ body {
 .assigned-display .workout-link:hover,
 .assigned-display .workout-link:focus,
 .assigned-display .workout-link:active {
-  color: #ffcc00 !important;
+  color: #3dff89 !important;
   text-decoration: none !important;
   outline: none;
 }
@@ -826,3 +827,22 @@ body {
 /* Small utility */
 .mt-8 { margin-top: 8px; }
 .mt-12 { margin-top: 12px; }
+
+.table-container {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+/* Center results in assign_workout.mustache */
+#resultsContainer {
+    margin: 18px auto;               /* center horizontally */
+    max-width: 500px;
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;  
+    width: 100%;          
+    gap: 8px;
+    padding: 8px;
+}
