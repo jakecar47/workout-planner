@@ -21,28 +21,6 @@ CREATE TABLE staging_exercises (
     description TEXT
 );
 
--- Load Kaggle file
--- NOTE: replace path with your absolute path to the CSV file
-LOAD DATA LOCAL INFILE 'C:/DBMSTermProject/cs4370-term-project/uploads/exercises/exercises_prepared.csv'
-INTO TABLE staging_exercises
-FIELDS TERMINATED BY ','
-OPTIONALLY ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(name, target_muscle, image_path, description);
-
--- Upsert into main exercises table
-INSERT INTO exercises (name, target_muscle, image_path, description)
-SELECT name, target_muscle, image_path, description
-FROM staging_exercises
-ON DUPLICATE KEY UPDATE
-    target_muscle = VALUES(target_muscle),
-    image_path = VALUES(image_path),
-    description = VALUES(description);
-
-DROP TABLE IF EXISTS staging_exercises;
-
-
 -- ==========================
 -- WORKOUTS (VALID USERS)
 -- ==========================
