@@ -270,11 +270,13 @@ table tr:hover {
 
 .exercise-card {
     background: #222;
-    width: 300px;
+    width: 400px;
     border-radius: 14px;
     padding: 20px;
     border: 1px solid #444;
     transition: 0.25s ease;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .exercise-card:hover {
@@ -283,7 +285,7 @@ table tr:hover {
 }
 
 .exercise-image {
-    height: 140px;
+    height: 240px;
     background: #333;
     border-radius: 10px;
     margin-bottom: 14px;
@@ -307,7 +309,9 @@ table tr:hover {
 
 .exercise-desc {
     color: #ddd;
-    font-size: 14px;
+    font-size: 15px;
+    line-height: 1.4;
+    margin-top: 10px;
 }
 
 .no-data {
