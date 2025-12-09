@@ -2,6 +2,632 @@
    GLOBAL RESET & BASE STYLING
 ----------------------------------------------------------- */
 * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #fff;
+}
+
+/* -----------------------------------------------------------
+   AUTH PAGES (LOGIN & REGISTER)
+----------------------------------------------------------- */
+.auth-container {
+    width: 380px;
+    margin: 80px auto;
+    padding: 40px 35px;
+    background: #1e1e1e;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.auth-container h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #00BFFF;
+}
+
+.auth-container input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 40px;
+    border: 2px solid #444;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.auth-container input:focus {
+    border-color: #00BFFF;
+    box-shadow: 0 0 6px #00BFFF;
+    outline: none;
+}
+
+.auth-container button {
+    width: 100%;
+    background: #00BFFF;
+    color: #0a0a0a;
+    padding: 14px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.auth-container button:hover {
+    background: #009fd6;
+}
+
+.auth-container p {
+    text-align: center;
+    margin-top: 8px;
+    color: #ccc;
+}
+
+.error-message {
+    color: #ff5d5d;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* -----------------------------------------------------------
+   NAVIGATION BAR
+----------------------------------------------------------- */
+.navbar {
+    width: 100%;
+    background: #1e1e1e;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #00BFFF;
+}
+
+.navbar .site-name {
+    font-size: 26px;
+    font-weight: bold;
+    color: #00BFFF;
+}
+
+/* CENTER NAV LINKS */
+.nav-center {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.nav-link:hover {
+    color: #00BFFF;
+}
+
+/* PROFILE */
+.navbar .nav-right img,
+.profile-pic {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #00BFFF;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #00BFFF;
+    text-decoration: none;
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+/* -----------------------------------------------------------
+   PAGE WRAPPERS
+----------------------------------------------------------- */
+.page-container {
+    width: 85%;
+    margin: 40px auto;
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+}
+
+.section-title {
+    font-size: 26px;
+    color: #00BFFF;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+/* -----------------------------------------------------------
+   WEEKLY HOME TABLE
+----------------------------------------------------------- */
+.weekly-table {
+    width: 90%;
+    margin: 60px auto;
+    border-collapse: collapse;
+    background: #222;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.weekly-table th {
+    background: #000;
+    color: #00BFFF;
+    padding: 14px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.weekly-table td {
+    padding: 14px;
+    border-top: 1px solid #444;
+    text-align: center;
+    font-size: 15px;
+}
+
+.weekly-table tr:hover {
+    background: rgba(0, 191, 255, 0.08);
+}
+
+/* -----------------------------------------------------------
+   TABLE STYLING (Workouts, Goals, etc.)
+----------------------------------------------------------- */
+.table-container {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #222;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th {
+    background: #333;
+    padding: 16px;
+    color: #00BFFF;
+    text-align: left;
+    font-size: 16px;
+}
+
+table td {
+    padding: 14px;
+    border-top: 1px solid #444;
+    color: #fff;
+    font-size: 15px;
+}
+
+table tr:hover {
+    background: rgba(0, 191, 255, 0.08);
+}
+
+/* -----------------------------------------------------------
+   BUTTONS
+----------------------------------------------------------- */
+.black-button {
+    background: #00BFFF;
+    color: #0a0a0a;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.black-button:hover {
+    background: #009fd6;
+}
+
+.center-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.double-button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+/* -----------------------------------------------------------
+   EXERCISES PAGE — GRID CARD LAYOUT
+----------------------------------------------------------- */
+.exercise-grid {
+    display: flex;
+    gap: 25px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.exercise-card {
+    background: #222;
+    width: 300px;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #444;
+    transition: 0.25s ease;
+}
+
+.exercise-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.6);
+}
+
+.exercise-image {
+    height: 140px;
+    background: #333;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.exercise-name {
+    color: #00BFFF;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.exercise-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #ccc;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.exercise-desc {
+    color: #ddd;
+    font-size: 14px;
+}
+
+.no-data {
+    text-align: center;
+    width: 100%;
+    color: #aaa;
+    font-size: 16px;
+    margin-top: 60px;
+}
+
+/* -----------------------------------------------------------
+   PROFILE PAGE
+----------------------------------------------------------- */
+.profile-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.profile-center img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 3px solid #00BFFF;
+    transition: 0.3s;
+}
+
+.profile-center img:hover {
+    transform: scale(1.06);
+}
+
+.goal-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #00BFFF;
+}
+
+/* -----------------------------------------------------------
+   SPACING HELPERS
+----------------------------------------------------------- */
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mt-40 { margin-top: 40px; }
+
+/* -----------------------------------------------------------
+   TOP NAV BUTTON STYLING
+----------------------------------------------------------- */
+.nav-center a {
+    text-decoration: none;
+    background: #00BFFF;
+    color: #0a0a0a !important;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.25s ease;
+}
+
+.nav-center a:hover {
+    background: #009fd6;
+    transform: translateY(-2px);
+}
+
+.nav-center a:visited {
+    color: #0a0a0a;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.profile-name {
+    color: #00BFFF;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.profile-link:hover .profile-name {
+    color: #009fd6;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-logo {
+    width: 34px;
+    height: 34px;
+    max-width: 34px;
+    max-height: 34px;
+    object-fit: contain;
+    display: block;
+}
+
+/* -----------------------------------------------------------
+   EXERCISE SEARCH BAR + AUTOCOMPLETE
+----------------------------------------------------------- */
+.exercise-search {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 25px 0 40px;
+}
+
+.exercise-search input {
+    width: 480px;
+    padding: 12px 20px;
+    border-radius: 40px;
+    border: 2px solid #00BFFF;
+    background: #1e1e1e;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+}
+
+.exercise-search input::placeholder {
+    color: #aaa;
+}
+
+.exercise-search input:focus {
+    box-shadow: 0 0 10px rgba(0,191,255,0.6);
+}
+
+.autocomplete-box {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 480px;
+    margin-top: 10px;
+    background: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.autocomplete-item {
+    padding: 14px 18px;
+    cursor: pointer;
+    color: #fff;
+    border-bottom: 1px solid #333;
+    transition: 0.2s ease;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.active {
+    background: #00BFFF;
+    color: #0a0a0a;
+}
+
+/* -----------------------------------------------------------
+   ADD EXERCISE WIZARD 
+----------------------------------------------------------- */
+.wizard-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.wizard-modal {
+    background: #1e1e1e;
+    padding: 35px 40px;
+    border-radius: 16px;
+    width: 520px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+}
+
+.wizard-step input,
+.wizard-step textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid #444;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.wizard-step input:focus,
+.wizard-step textarea:focus {
+    border-color: #00BFFF;
+    box-shadow: 0 0 6px rgba(0,191,255,0.7);
+    outline: none;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    background: #00BFFF;
+    color: #0a0a0a;
+    padding: 12px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.file-upload-btn:hover {
+    background: #009fd6;
+}
+
+.upload-status {
+    font-size: 14px;
+    color: #00ff9c;
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+.wizard-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+/* -----------------------------------------------------------
+   WIZARD STYLING
+----------------------------------------------------------- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-box {
+    background: #1e1e1e;
+    width: 520px;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+}
+
+.modal-input {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 40px;
+    border: 2px solid #444;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+.modal-input:focus {
+    border-color: #00BFFF;
+    box-shadow: 0 0 8px rgba(0,191,255,.6);
+    outline: none;
+}
+
+.wizard-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.upload-btn {
+    background: #2a2a2a;
+    border: 2px dashed #00BFFF;
+    padding: 12px;
+    width: 100%;
+    border-radius: 40px;
+    color: #00BFFF;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.upload-btn:hover {
+    background: #00BFFF;
+    color: #0a0a0a;
+}
+
+.upload-success {
+    color: #3dff89;
+    text-align: center;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.black-button.danger {
+    background: #444;
+}
+.black-button.danger:hover {
+    background: #666;
+}
+
+/* GLOBAL RESET / BASE (additional adjustments for mustache templates) */
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -21,7 +647,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Explicitly constrain the left-side logo and right-side profile avatar to avoid sizing conflicts */
+/* Explicitly constrain logo and profile avatar used in templates */
 .navbar .nav-left img.nav-logo,
 .logo-img,
 .navbar .site-logo {
@@ -40,9 +666,7 @@ body {
   object-fit: cover;
 }
 
-/* -----------------------------------------------------------
-   THEME VARIABLES & RESPONSIVE SIZING
------------------------------------------------------------ */
+/* THEME VARIABLES & RESPONSIVE SIZING */
 :root{
   --bg: #0f1724;
   --panel: #0b1220;
@@ -56,9 +680,7 @@ body {
   --shadow-1: 0 6px 18px rgba(0,0,0,0.45);
 }
 
-/* -----------------------------------------------------------
-   GENERIC BUTTONS
------------------------------------------------------------ */
+/* GENERIC BUTTONS (harmonize with existing .black-button) */
 .button,
 .black-button {
   display: inline-block;
@@ -88,10 +710,7 @@ body {
   transform: none;
 }
 
-/* -----------------------------------------------------------
-   ASSIGNED DISPLAY / WORKOUT LINK
------------------------------------------------------------ */
-/* give assigned display muted style */
+/* ASSIGNED DISPLAY / WORKOUT LINK (ensure consistent look in templates) */
 .assigned-display {
   color: var(--muted);
   font-size: 0.95rem;
@@ -101,17 +720,15 @@ body {
   align-items: center;
 }
 
-/* workout name link style inside assigned display */
 .assigned-display .workout-link {
-  color: #ffcc00 !important;            /* yellow */
+  color: #ffcc00 !important;
   font-weight: 700;
-  text-decoration: none !important;     /* remove underline */
+  text-decoration: none !important;
   background: transparent;
   border: none;
   cursor: pointer;
 }
 
-/* ensure all link states keep the same appearance */
 .assigned-display .workout-link:link,
 .assigned-display .workout-link:visited,
 .assigned-display .workout-link:hover,
@@ -122,24 +739,19 @@ body {
   outline: none;
 }
 
-/* -----------------------------------------------------------
-   WRAPPERS & HELPERS
------------------------------------------------------------ */
+/* WRAPPERS & HELPERS */
 .assign-actions {
   margin-top: 8px;
 }
 
-/* Make the Assign button full width inside assign-actions (if used) */
 .assign-actions .black-button {
   width: 100%;
 }
 
-/* Wrapper under notes textarea for Save Notes button */
 .save-row {
   margin-top: 8px;
 }
 
-/* Actions column cell spacing/nowrap */
 .actions-cell {
   white-space: nowrap;
   display: flex;
@@ -147,118 +759,7 @@ body {
   align-items: center;
 }
 
-/* -----------------------------------------------------------
-   AUTH PAGES (LOGIN & REGISTER)
------------------------------------------------------------ */
-.auth-container {
-  max-width: 420px;
-  margin: 48px auto;
-  background: var(--panel);
-  padding: 28px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.03);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}
-
-.auth-container h2 {
-  margin-bottom: 16px;
-  color: var(--text);
-  font-size: 1.4rem;
-}
-
-.auth-container input {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.04);
-  background: rgba(255,255,255,0.01);
-  color: var(--text);
-}
-
-/* -----------------------------------------------------------
-   NAVIGATION BAR
------------------------------------------------------------ */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.02);
-  background: rgba(6,10,16,0.6);
-}
-
-.navbar .site-name {
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  color: var(--text);
-}
-
-/* PROFILE / RIGHT-SIDE NAV */
-.navbar .nav-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* -----------------------------------------------------------
-   PAGE WRAPPERS
------------------------------------------------------------ */
-.page-container {
-  max-width: 1100px;
-  margin: 28px auto;
-  padding: 12px;
-}
-
-.section-title {
-  font-size: 1.15rem;
-  margin-bottom: 12px;
-}
-
-/* -----------------------------------------------------------
-   WEEKLY HOME TABLE
------------------------------------------------------------ */
-.weekly-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: rgba(10,14,20,0.6);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.weekly-table thead {
-  background: rgba(255,255,255,0.02);
-  text-align: left;
-}
-
-.weekly-table thead th {
-  padding: 12px 14px;
-  font-size: 0.85rem;
-  color: var(--muted);
-  letter-spacing: 0.6px;
-}
-
-.weekly-table td {
-  padding: 10px 14px;
-  border-top: 1px solid rgba(255,255,255,0.02);
-  vertical-align: middle;
-}
-
-/* make table horizontally scroll on small screens while scaling text */
-.page-container .weekly-table {
-  width: 100%;
-  overflow-x: auto;
-}
-
-/* GRIDS & ROWS */
-.assign-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* -----------------------------------------------------------
-   NOTES TEXTAREA - aesthetic improvements
------------------------------------------------------------ */
+/* NOTES TEXTAREA */
 .notes-input {
   width: 100%;
   resize: vertical;
@@ -271,28 +772,23 @@ body {
   font-size: 0.95rem;
 }
 
-/* placeholder color */
 .notes-input::placeholder {
   color: rgba(255,255,255,0.22);
 }
 
-/* focus state */
 .notes-input:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 6px 18px rgba(0,191,255,0.06);
 }
 
-/* subtle hover & focus for selects and buttons */
 .workout-select:focus,
 .black-button:focus {
   outline: 3px solid rgba(0,191,255,0.12);
   outline-offset: 2px;
 }
 
-/* -----------------------------------------------------------
-   ACTIONS COLUMN & RESPONSIVE BEHAVIOR
------------------------------------------------------------ */
+/* SMALL-SCREEN TABLE ADJUSTMENTS */
 .day-cell {
   font-weight: 700;
   color: var(--muted);
@@ -303,7 +799,6 @@ body {
   background: rgba(255,255,255,0.01);
 }
 
-/* compact layout on very small screens */
 @media (max-width: 560px) {
   .weekly-table thead {
     display: none;
@@ -322,5 +817,12 @@ body {
   }
 }
 
-/* smaller padding for table rows when viewport is small */
-.logo-link:focus { outline: 3px solid rgba(0,191,255,0.12); outline-offset: 2px; }
+/* Accessibility focus for logo link */
+.logo-link:focus {
+  outline: 3px solid rgba(0,191,255,0.12);
+  outline-offset: 2px;
+}
+
+/* Small utility */
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }

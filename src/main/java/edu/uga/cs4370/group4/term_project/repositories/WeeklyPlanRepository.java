@@ -2,6 +2,7 @@ package edu.uga.cs4370.group4.term_project.repositories;
 
 import edu.uga.cs4370.group4.term_project.models.WeeklyPlan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@DependsOn("dataSourceScriptDatabaseInitializer") // ensure data.sql/schema.sql run first
 public class WeeklyPlanRepository {
 
     private final DataSource dataSource;
