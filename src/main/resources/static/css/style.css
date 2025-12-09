@@ -453,7 +453,9 @@ table tr:hover {
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     z-index: 9999;
-    overflow: hidden;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .autocomplete-item {

@@ -101,6 +101,29 @@
 let currentMatches = [];
 let activeIndex = -1;
 
+/* Auto-show dropdown when clicking input */
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("exerciseSearch");
+    const list = document.getElementById("autocomplete-list");
+
+    if (!searchInput || !list) return;
+
+    // Show dropdown on click if results exist
+    searchInput.addEventListener("focus", () => {
+        if (currentMatches.length > 0) {
+            list.style.display = "block";
+        }
+    });
+
+    // Hide dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+        if (e.target !== searchInput && !list.contains(e.target)) {
+            list.style.display = "none";
+        }
+    });
+});
+
+
 /**
  * Render a single exercise card in the grid
  */
@@ -170,12 +193,19 @@ function showDropdown() {
                 div.onclick = () => {
                     document.getElementById("exerciseSearch").value = exercise.name;
                     list.innerHTML = "";
+                    list.style.display = "none";
                     renderExerciseCard(exercise);
                 };
 
                 list.appendChild(div);
             });
+            
+            if(currentMatches.length > 0) {
+                list.style.display = "block";
+            }
         })
+        
+
         .catch(err => {
             console.error("Error fetching exercises:", err);
         });
