@@ -66,3 +66,17 @@ create table if not exists goals (
     foreign key (user_id) references users(id) on delete cascade,
     foreign key (exercise_id) references exercises(id) on delete cascade
 );
+
+-- WEEKLY_PLAN TABLE
+create table if not exists weekly_plan (
+    id int auto_increment,
+    user_id int not null,
+    day varchar(20) not null,
+    workout_id int,
+    notes text,
+    created_at timestamp default current_timestamp,
+    primary key(id),
+    foreign key (user_id) references users(id) on delete cascade,
+    foreign key (workout_id) references workouts(id) on delete cascade,
+    unique(user_id, day)
+);
