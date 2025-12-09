@@ -127,4 +127,66 @@ INSERT INTO goals (user_id, description) VALUES
 (2, 'Do 10 pull-ups'),
 (3, 'Increase squat to 225 lbs');
 
+-- ==========================
+-- DUMMY WORKOUTS FOR LARGE DATASET (50–150)
+-- ==========================
+INSERT INTO workouts (id, user_id, name, description, startTime, endTime, created_at)
+SELECT
+    seq.num,
+    1,
+    CONCAT('Auto Workout ', seq.num),
+    'Synthetic dataset workout',
+    DATE_ADD('2025-12-01', INTERVAL FLOOR(RAND()*30) DAY),
+    DATE_ADD('2025-12-01', INTERVAL FLOOR(RAND()*30) DAY),
+    NOW()
+FROM (
+    SELECT @row := @row + 1 AS num
+    FROM information_schema.tables, (SELECT @row := 49) r
+    LIMIT 101
+) seq;
+
+-- ==========================
+-- LARGE DATASET (1,200 ROWS) 
+-- ==========================
+INSERT IGNORE INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT DISTINCT
+    FLOOR(RAND()*101) + 50 AS workout_id,
+    FLOOR(RAND()*20) + 1 AS exercise_id,
+    FLOOR(RAND()*120) AS time,
+    FLOOR(RAND()*5) + 1 AS sets,
+    FLOOR(RAND()*15) + 5 AS reps
+FROM information_schema.columns
+LIMIT 1200;
+
+-- ==========================
+-- WEEKLY_PLAN SAMPLE (MON -> SUN) for users 1, 2, 3
+-- ==========================
+INSERT INTO weekly_plan (user_id, day, workout_id, notes, created_at) VALUES
+-- user 1 (john)
+(1, 'MON', 1,  'Bench press focus — heavy sets',                          '2025-12-01 08:00:00'),
+(1, 'TUE', 8,  'Leg day — squats & leg press',                           '2025-12-02 10:00:00'),
+(1, 'WED', 5,  'Back: barbell row + lat pulldown',                      '2025-12-03 17:00:00'),
+(1, 'THU', 11, 'Shoulder press + lateral raises',                       '2025-12-04 06:30:00'),
+(1, 'FRI', 3,  'Push ups + dips — upper volume',                        '2025-12-05 18:30:00'),
+(1, 'SAT', 13, 'Biceps / arms: curls & hammer curls',                   '2025-12-06 14:00:00'),
+(1, 'SUN', 17, 'Core & mobility: plank circuit',                       '2025-12-07 09:00:00'),
+
+-- user 2 (sarah)
+(2, 'MON', 8,  'Legs — heavy squats',                                    '2025-12-01 07:00:00'),
+(2, 'TUE', 4,  'Deadlift focus',                                         '2025-12-02 18:00:00'),
+(2, 'WED', 6,  'Pull ups and rows',                                      '2025-12-03 17:30:00'),
+(2, 'THU', 2,  'Incline bench light',                                    '2025-12-04 06:00:00'),
+(2, 'FRI', 12, 'Shoulder stability + lateral raises',                    '2025-12-05 19:00:00'),
+(2, 'SAT', 16, 'Dips + triceps work',                                    '2025-12-06 11:00:00'),
+(2, 'SUN', 20, 'Active recovery — mountain climbers + light cardio',     '2025-12-07 09:30:00'),
+
+-- user 3 (alex)
+(3, 'MON', 4,  'Full body A — technique work',                           '2025-12-01 06:00:00'),
+(3, 'TUE', 8,  'Legs: lunges + leg press',                              '2025-12-02 12:00:00'),
+(3, 'WED', 5,  'Back and core',                                          '2025-12-03 16:00:00'),
+(3, 'THU', 1,  'Bench press — strength sets',                           '2025-12-04 07:00:00'),
+(3, 'FRI', 11, 'Shoulder press + accessory work',                       '2025-12-05 18:00:00'),
+(3, 'SAT', 13, 'Arms — curls and hammer curls',                         '2025-12-06 15:00:00'),
+(3, 'SUN', 17, 'Core and mobility',                                      '2025-12-07 10:00:00');
+
 SET FOREIGN_KEY_CHECKS = 1;

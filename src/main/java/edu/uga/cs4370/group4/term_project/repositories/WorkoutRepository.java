@@ -104,4 +104,41 @@ public class WorkoutRepository {
 
         return null;
     }
+
+    // SEARCH WORKOUTS BY NAME (case insensitive)
+    public List<Workout> findByNameContainingIgnoreCase(String keyword) {
+        List<Workout> results = new ArrayList<>();
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return results;
+        }
+
+        String sql = "SELECT * FROM workouts WHERE LOWER(name) LIKE ? ORDER BY created_at DESC";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + keyword.toLowerCase() + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Workout w = new Workout(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("user_id"),
+                        rs.getString("description"),
+                        rs.getString("startTime"),
+                        rs.getString("endTime"),
+                        rs.getTimestamp("created_at").toString()
+                    );
+
+                    results.add(w);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error searching workouts: " + e.getMessage());
+        }
+
+        return results;
+    }  
 }

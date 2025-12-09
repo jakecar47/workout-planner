@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Workout</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+{{> fragments/nav_bar}}
+
+<div class="page-container">
+
+    <h1 class="section-title">Search Workouts to Assign</h1>
+
+    <!-- SEARCH FORM -->
+    <form id="searchForm" action="/workouts/search" method="GET"
+          class="auth-container" style="width:100%; max-width:600px;">
+
+        <input
+            id="workoutSearch"
+            type="text"
+            name="q"
+            placeholder="Search by name or keyword"
+            autocomplete="off"
+            value="{{q}}"
+            onkeyup="showDropdown()"
+            onkeydown="checkEnter(event)"
+        >
+        <input type="hidden" name="day" value="{{day}}">
+
+        <div id="autocomplete-list" class="autocomplete-box" style="position:relative; margin-top:6px;"></div>
+
+        <div style="display:flex; gap:8px; margin-top:10px;">
+            <button type="submit" class="black-button">Search</button>
+            <button type="button" class="black-button" onclick="window.location.href='/'">Cancel</button>
+        </div>
+    </form>
+
+    <!-- SEARCH RESULTS - only 'Assign' button -->
+    <div class="table-container" style="margin-top:18px; max-width:800px;">
+        {{#results}}
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:rgba(255,255,255,0.02); border-radius:8px; margin-bottom:8px;">
+            <div>
+                <div style="font-weight:700; color:var(--text);">{{name}}</div>
+                {{#description}}<div style="color:var(--muted); font-size:0.95rem;">{{description}}</div>{{/description}}
+                {{#startTime}}<div style="color:var(--muted); font-size:0.9rem;">Start: {{startTime}}</div>{{/startTime}}
+                {{#endTime}}<div style="color:var(--muted); font-size:0.9rem;">End: {{endTime}}</div>{{/endTime}}
+            </div>
+
+            <div style="display:flex; gap:8px; align-items:center;">
+                <!-- Assign button: posts workoutId + day to assign endpoint -->
+                <form action="/workouts/assign" method="POST" style="display:inline;">
+                    <input type="hidden" name="workoutId" value="{{id}}">
+                    <input type="hidden" name="day" value="{{../day}}">
+                    <button class="black-button" type="submit">Assign</button>
+                </form>
+            </div>
+        </div>
+        {{/results}}
+
+        {{^results}}
+        <div style="color:#ccc; text-align:center; padding:18px 6px;">No results. Try a different search.</div>
+        {{/results}}
+    </div>
+
+    <!-- BACK BUTTON -->
+    <div class="center-button" style="margin-top:18px;">
+        <button class="black-button" onclick="window.location.href='/'">
+            Back Home
+        </button>
+    </div>
+
+</div>
+
+<script>
+let currentMatches = [];
+let activeIndex = -1;
+
+/**
+ * Populate autocomplete dropdown by calling /workouts/api/search
+ */
+function showDropdown() {
+    const inputEl = document.getElementById("workoutSearch");
+    const input = inputEl.value.trim();
+    const list = document.getElementById("autocomplete-list");
+
+    list.innerHTML = "";
+    activeIndex = -1;
+    currentMatches = [];
+
+    if (!input) return;
+
+    fetch(`/workouts/api/search?q=${encodeURIComponent(input)}`)
+        .then(resp => {
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            return resp.json();
+        })
+        .then(data => {
+            currentMatches = data || [];
+            list.innerHTML = "";
+
+            if (!currentMatches.length) return;
+
+            const box = document.createElement("div");
+            box.style.position = "relative";
+
+            currentMatches.forEach((workout, idx) => {
+                const item = document.createElement("div");
+                item.className = "autocomplete-item";
+                item.style.padding = "8px 10px";
+                item.style.cursor = "pointer";
+                item.style.color = "var(--text)";
+                item.textContent = workout.name;
+                item.onclick = () => {
+                    document.getElementById("workoutSearch").value = workout.name;
+                    // submit search to show results (and allow assign)
+                    document.getElementById("searchForm").submit();
+                };
+                box.appendChild(item);
+            });
+
+            list.appendChild(box);
+        })
+        .catch(err => {
+            console.error("Error fetching workouts:", err);
+            currentMatches = [];
+            list.innerHTML = "";
+        });
+}
+
+/**
+ * Keyboard navigation + selection for dropdown
+ */
+function checkEnter(e) {
+    const items = document.querySelectorAll("#autocomplete-list .autocomplete-item");
+    if (!items.length) return;
+
+    if (e.key === "ArrowDown") {
+        e.preventDefault();
+        activeIndex = (activeIndex + 1) % items.length;
+        updateActive(items);
+        return;
+    }
+
+    if (e.key === "ArrowUp") {
+        e.preventDefault();
+        activeIndex = (activeIndex - 1 + items.length) % items.length;
+        updateActive(items);
+        return;
+    }
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        if (activeIndex >= 0 && items[activeIndex]) {
+            items[activeIndex].click();
+            return;
+        }
+        // fallback: submit form (search)
+        document.getElementById("searchForm").submit();
+    }
+}
+
+/**
+ * highlight selected item
+ */
+function updateActive(items) {
+    items.forEach(i => i.classList.remove("active"));
+    if (activeIndex >= 0 && items[activeIndex]) {
+        items[activeIndex].classList.add("active");
+        items[activeIndex].scrollIntoView({ block: "nearest" });
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,41 +1,97 @@
+<!-- ...existing code... -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
-
 {{> fragments/nav_bar}}
 
-<!-- MAIN CONTENT -->
 <div class="page-container home-grid">
+  <table class="weekly-table" aria-label="Weekly workout plan">
+    <thead>
+      <tr><th>DAY</th><th>WORKOUT</th><th>NOTES</th><th>ACTIONS</th></tr>
+    </thead>
+    <tbody>
+      {{#dayRows}}
+      <tr data-day="{{key}}">
+        <td class="day-cell">{{key}}</td>
+        <td>
+          <div class="assign-row">
+            <div id="assigned-{{key}}" class="assigned-display">
+              {{#workoutName}}
+                <a href="/workouts/{{workoutId}}" class="workout-link">{{workoutName}}</a>
+              {{/workoutName}}
+              {{^workoutName}}-- No workout assigned --{{/workoutName}}
+            </div>
+          </div>
+        </td>
+        <td>
+          <textarea id="notes-{{key}}" class="notes-input" rows="2" placeholder="No notes yet">{{notes}}</textarea>
 
-    <table class="weekly-table">
+          <div class="save-row">
+            <button type="button" id="save-{{key}}" onclick="saveNotes('{{key}}')" class="black-button primary" aria-label="Save notes for {{key}}">
+              Save
+            </button>
+          </div>
+        </td>
+        <td class="actions-cell">
+          <a
+            href="/workouts/assign?day={{key}}"
+            class="black-button primary"
+            aria-label="Assign workout for {{key}}"
+          >Assign Workout</a>
 
-        <thead>
-            <tr>
-                <th>DAY</th>
-                <th>WORKOUT</th>
-                <th>NOTES</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr><td>MON</td><td>Workout</td><td></td></tr>
-            <tr><td>TUE</td><td>Workout</td><td></td></tr>
-            <tr><td>WED</td><td>Workout</td><td></td></tr>
-            <tr><td>THU</td><td>Workout</td><td></td></tr>
-            <tr><td>FRI</td><td>Workout</td><td></td></tr>
-            <tr><td>SAT</td><td>Workout</td><td></td></tr>
-            <tr><td>SUN</td><td>Workout</td><td></td></tr>
-        </tbody>
-
-    </table>
-
+          <button
+            type="button"
+            id="clear-{{key}}"
+            onclick="clearDay('{{key}}')"
+            class="black-button danger"
+            aria-label="Clear workout and notes for {{key}}"
+          >Clear</button>
+        </td>
+      </tr>
+      {{/dayRows}}
+    </tbody>
+  </table>
 </div>
+
+<script>
+  // Clear notes in the DOM and request the server to clear the workout & notes for the day.
+  // Endpoint: POST /api/clear-day  with JSON body { day: "<day>" }
+  function clearDay(day) {
+    const notesEl = document.getElementById(`notes-${day}`);
+    const assignedEl = document.getElementById(`assigned-${day}`);
+    const clearBtn = document.getElementById(`clear-${day}`);
+
+    if (clearBtn) clearBtn.disabled = true;
+
+    // Update UI immediately
+    if (notesEl) notesEl.value = '';
+    if (assignedEl) assignedEl.innerHTML = '-- No workout assigned --';
+
+    // Send request to server to persist the clear action.
+    fetch('/api/clear-day', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ day })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Server error');
+      return response.json().catch(() => ({}));
+    })
+    .catch(err => {
+      // On error, notify user. Consider reloading or reverting UI if desired.
+      alert('Failed to clear day: ' + err.message);
+    })
+    .finally(() => {
+      if (clearBtn) clearBtn.disabled = false;
+    });
+  }
+</script>
 
 </body>
 </html>
+<!-- ...existing code... -->
