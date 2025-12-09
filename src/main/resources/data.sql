@@ -11,29 +11,37 @@ INSERT INTO users (email, uname, password) VALUES
 ('alex@example.com', 'alex', '$2a$10$AlW8dxharaMhyjgNULMd5OgP50ceJtBsmCTjEPmtnfk1BLvbUmayG');
 
 -- ==========================
--- EXERCISES (20 base exercises)
+-- EXERCISES (Loaded from dataset)
 -- ==========================
-INSERT INTO exercises (id, name, target_muscle, description) VALUES
-(1, 'Bench Press', 'Chest', 'Barbell bench press for upper body strength'),
-(2, 'Incline Bench Press', 'Chest', 'Targets upper chest'),
-(3, 'Push Ups', 'Chest', 'Bodyweight chest exercise'),
-(4, 'Deadlift', 'Back', 'Full compound movement'),
-(5, 'Barbell Row', 'Back', 'Mid-back focus'),
-(6, 'Pull Ups', 'Back', 'Bodyweight pulling exercise'),
-(7, 'Lat Pulldown', 'Back', 'Vertical pull exercise'),
-(8, 'Squat', 'Legs', 'Primary lower body compound lift'),
-(9, 'Leg Press', 'Legs', 'Lower-body machine press'),
-(10, 'Lunges', 'Legs', 'Leg unilateral movement'),
-(11, 'Shoulder Press', 'Shoulders', 'Overhead press movement'),
-(12, 'Lateral Raise', 'Shoulders', 'Isolates lateral deltoid'),
-(13, 'Bicep Curl', 'Arms', 'Isolates biceps'),
-(14, 'Hammer Curl', 'Arms', 'Neutral-grip biceps variation'),
-(15, 'Tricep Pushdown', 'Arms', 'Cable tricep extension'),
-(16, 'Dips', 'Arms', 'Bodyweight triceps exercise'),
-(17, 'Plank', 'Core', 'Isometric abdominal hold'),
-(18, 'Crunches', 'Core', 'Abdominal flexion exercise'),
-(19, 'Russian Twist', 'Core', 'Rotational core movement'),
-(20, 'Mountain Climbers', 'Core/Cardio', 'Dynamic cardio movement');
+DROP TABLE IF EXISTS staging_exercises;
+CREATE TABLE staging_exercises (
+    name VARCHAR(255),
+    target_muscle VARCHAR(255),
+    image_path VARCHAR(255),
+    description TEXT
+);
+
+-- Load Kaggle file
+-- NOTE: replace path with your absolute path to the CSV file
+LOAD DATA LOCAL INFILE 'C:/DBMSTermProject/cs4370-term-project/uploads/exercises/exercises_prepared.csv'
+INTO TABLE staging_exercises
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(name, target_muscle, image_path, description);
+
+-- Upsert into main exercises table
+INSERT INTO exercises (name, target_muscle, image_path, description)
+SELECT name, target_muscle, image_path, description
+FROM staging_exercises
+ON DUPLICATE KEY UPDATE
+    target_muscle = VALUES(target_muscle),
+    image_path = VALUES(image_path),
+    description = VALUES(description);
+
+DROP TABLE IF EXISTS staging_exercises;
+
 
 -- ==========================
 -- WORKOUTS (VALID USERS)
@@ -49,23 +57,64 @@ INSERT INTO workouts (id, user_id, name, description, startTime, endTime, create
 -- ==========================
 -- WORKOUT_EXERCISES (BASE)
 -- ==========================
-INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps) VALUES
-(1, 1, NULL, 4, 8),
-(1, 3, NULL, 3, 15),
-(1, 13, NULL, 3, 12),
-(2, 8, NULL, 5, 5),
-(2, 9, NULL, 4, 12),
-(2, 10, NULL, 3, 10),
-(3, 4, NULL, 5, 5),
-(3, 5, NULL, 4, 8),
-(3, 7, NULL, 3, 12),
-(4, 1, NULL, 3, 10),
-(4, 8, NULL, 3, 10),
-(4, 14, NULL, 3, 12),
-(5, 6, NULL, 3, 6),
-(5, 12, NULL, 4, 12),
-(6, 11, NULL, 3, 10),
-(6, 13, NULL, 4, 10);
+-- Workout 1 — Chest Day
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 1, id, NULL, 4, 8 FROM exercises WHERE name = 'barbell bench press';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 1, id, NULL, 3, 15 FROM exercises WHERE name = 'dumbbell fly';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 1, id, NULL, 3, 12 FROM exercises WHERE name = 'weighted tricep dips';
+
+
+-- Workout 2 — Leg Day
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 2, id, NULL, 5, 5 FROM exercises WHERE name = 'barbell wide squat';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 2, id, NULL, 4, 12 FROM exercises WHERE name = 'lever leg extension';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 2, id, NULL, 3, 10 FROM exercises WHERE name = 'lever lying leg curl';
+
+
+-- Workout 3 — Back Day
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 3, id, NULL, 5, 5 FROM exercises WHERE name = 'barbell deadlift';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 3, id, NULL, 4, 8 FROM exercises WHERE name = 'pull up (neutral grip)';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 3, id, NULL, 3, 12 FROM exercises WHERE name = 'cable seated row';
+
+
+-- Workout 4 — Full Body A
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 4, id, NULL, 3, 10 FROM exercises WHERE name = 'barbell deadlift';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 4, id, NULL, 3, 10 FROM exercises WHERE name = 'barbell bench press';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 4, id, NULL, 3, 12 FROM exercises WHERE name = 'dumbbell goblet squat';
+
+
+-- Workout 5 — Full Body B
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 5, id, NULL, 3, 6 FROM exercises WHERE name = 'dumbbell lunge with bicep curl';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 5, id, NULL, 4, 12 FROM exercises WHERE name = 'dumbbell bent over row';
+
+
+-- Workout 6 — Arms & Shoulders
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 6, id, NULL, 3, 10 FROM exercises WHERE name = 'dumbbell seated shoulder press';
+
+INSERT INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
+SELECT 6, id, NULL, 4, 15 FROM exercises WHERE name = 'dumbbell seated bicep curl';
 
 -- ==========================
 -- GOALS
@@ -77,36 +126,5 @@ INSERT INTO goals (user_id, description) VALUES
 (2, 'Lose 10 pounds'),
 (2, 'Do 10 pull-ups'),
 (3, 'Increase squat to 225 lbs');
-
--- ==========================
--- DUMMY WORKOUTS FOR LARGE DATASET (50–150)
--- ==========================
-INSERT INTO workouts (id, user_id, name, description, startTime, endTime, created_at)
-SELECT
-    seq.num,
-    1,
-    CONCAT('Auto Workout ', seq.num),
-    'Synthetic dataset workout',
-    DATE_ADD('2025-12-01', INTERVAL FLOOR(RAND()*30) DAY),
-    DATE_ADD('2025-12-01', INTERVAL FLOOR(RAND()*30) DAY),
-    NOW()
-FROM (
-    SELECT @row := @row + 1 AS num
-    FROM information_schema.tables, (SELECT @row := 49) r
-    LIMIT 101
-) seq;
-
--- ==========================
--- LARGE DATASET (1,200 ROWS) 
--- ==========================
-INSERT IGNORE INTO workout_exercises (workout_id, exercise_id, time, sets, reps)
-SELECT DISTINCT
-    FLOOR(RAND()*101) + 50 AS workout_id,
-    FLOOR(RAND()*20) + 1 AS exercise_id,
-    FLOOR(RAND()*120) AS time,
-    FLOOR(RAND()*5) + 1 AS sets,
-    FLOOR(RAND()*15) + 5 AS reps
-FROM information_schema.columns
-LIMIT 1200;
 
 SET FOREIGN_KEY_CHECKS = 1;
