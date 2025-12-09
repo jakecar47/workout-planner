@@ -15,8 +15,28 @@
 
     <h1 class="section-title">Your Workouts</h1>
 
-    <div class="table-container">
-        <table>
+    <!-- SEARCH BAR -->
+    <div class="auth-container" style="width:100%; max-width:600px; margin-bottom:12px;">
+        <input
+            id="workoutsSearch"
+            type="search"
+            name="q"
+            placeholder="Search workouts by name or description"
+            autocomplete="off"
+            style="width:100%;"
+        >
+    </div>
+
+    <!-- Header-only table (fixed, above the scrollable results) -->
+    <div class="table-container" style="margin-bottom:8px;">
+        <table aria-hidden="true" class="table-headers">
+            <colgroup>
+                <col style="width:25%">
+                <col style="width:45%">
+                <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:10%">
+            </colgroup>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -26,23 +46,36 @@
                     <th>Actions</th>
                 </tr>
             </thead>
+        </table>
+    </div>
+
+    <!-- Scrollable results table (no headers) -->
+    <div class="table-container" id="workoutsResults" style="max-height:480px; overflow-y:auto;">
+        <table>
+            <colgroup>
+                <col style="width:25%">
+                <col style="width:45%">
+                <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:10%">
+            </colgroup>
 
             <tbody>
                 <!-- Iterates through items in workouts -->
                 {{#workouts}}
                 <tr>
-                    <td>{{name}}</td>
+                    <td><span class="workout-link">{{name}}</span></td>
                     <td>{{description}}</td>
                     <td>{{#startTime}}{{startTime}}{{/startTime}}</td>
                     <td>{{#endTime}}{{endTime}}{{/endTime}}</td>
                     <td>
                         <form action="/workouts/delete/{{id}}" method="POST" style="display:inline;">
-                            <button class="black-button" style="padding:8px 12px;">
+                            <button class="black-button danger">
                                 Delete
                             </button>
                         </form>
                         <form action="/workouts/{{id}}" method="GET" style="display:inline;">
-                            <button class="black-button" style="padding:8px 12px;">
+                            <button class="black-button">
                                 View
                             </button>
                         </form>
@@ -69,6 +102,37 @@
     </div>
 
 </div>
+
+<script>
+/* Simple client-side filter for the workouts table */
+(function() {
+    const input = document.getElementById('workoutsSearch');
+    if (!input) return;
+
+    function debounce(fn, wait) {
+        let t;
+        return (...args) => {
+            clearTimeout(t);
+            t = setTimeout(() => fn.apply(this, args), wait);
+        };
+    }
+
+    function filterTable(q) {
+        const query = (q || '').trim().toLowerCase();
+        const tbody = document.querySelector('#workoutsResults table tbody');
+        if (!tbody) return;
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.forEach(row => {
+            const cellsText = Array.from(row.querySelectorAll('td')).map(td => (td.textContent || '')).join(' ').toLowerCase();
+            const match = query === '' || cellsText.indexOf(query) !== -1;
+            row.style.display = match ? '' : 'none';
+        });
+    }
+
+    const debounced = debounce(() => filterTable(input.value), 150);
+    input.addEventListener('input', debounced);
+})();
+</script>
 
 </body>
 </html>

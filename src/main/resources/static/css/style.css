@@ -226,6 +226,67 @@ table tr:hover {
     background: rgba(0, 191, 255, 0.08);
 }
 
+/* soften workouts scroll area and table visuals (less boxy) */
+#workoutsResults {
+  max-height: 480px;              /* show ~8 rows */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  background: transparent;        /* don't add heavy panels */
+  border-radius: 8px;             /* subtle rounding */
+  padding: 0;
+  box-shadow: none;
+}
+
+/* keep table layout natural so columns don't feel rigid */
+#workoutsResults table {
+  width: 100%;
+  border-collapse: collapse;     /* collapse so rows flow smoothly */
+  table-layout: auto;            /* let content size columns */
+  background: transparent;
+}
+
+/* Header-only table tweaks to align with the scrollable results */
+.table-container .table-headers {
+  margin-bottom: 0; /* ensure no gap below the header table */
+}
+
+/* Move the Start / End headers slightly left to better align with results */
+.table-headers th.col-start,
+.table-headers th.col-end {
+  /* reduce left padding so header text shifts left a bit */
+  padding-left: 8px;
+}
+
+/* Keep general header padding consistent */
+.table-headers th {
+  padding: 12px 14px;
+}
+
+/* body rows: softer hover and spacing */
+#workoutsResults tbody tr {
+  transition: background 0.12s ease;
+}
+
+#workoutsResults tbody tr:hover {
+  background: rgba(0,191,255,0.04);
+}
+
+/* make table cells breathe */
+#workoutsResults td {
+  padding: 12px 14px;
+  color: var(--text);
+}
+
+/* ensure outer table-container doesn't add extra clipping */
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto;
+  background: transparent;
+  border-radius: 6px;
+  padding: 0;
+}
+
 /* -----------------------------------------------------------
    BUTTONS
 ----------------------------------------------------------- */
@@ -726,7 +787,7 @@ body {
 }
 
 .assigned-display .workout-link {
-  color: #3dff89 !important;
+  color: #ffd54f !important;
   font-weight: 700;
   text-decoration: none !important;
   background: transparent;
@@ -739,9 +800,19 @@ body {
 .assigned-display .workout-link:hover,
 .assigned-display .workout-link:focus,
 .assigned-display .workout-link:active {
-  color: #3dff89 !important;
+  color: #ffd54f !important;
   text-decoration: none !important;
   outline: none;
+}
+
+#workoutsResults .workout-link,
+.table-container .workout-link {
+  color: #ffd54f !important;
+  font-weight: 700;
+  text-decoration: none !important;
+  background: transparent;
+  cursor: default;        /* not a clickable control */
+  pointer-events: none;   /* disables mouse interactions */
 }
 
 /* WRAPPERS & HELPERS */
