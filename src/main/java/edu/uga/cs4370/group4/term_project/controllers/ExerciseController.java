@@ -59,8 +59,8 @@ public class ExerciseController {
     @ResponseBody
     public List<Exercise> searchExercisesApi(@RequestParam String query) {
 
-        if (!userService.isAuthenticated()) {
-            return Collections.emptyList();
+        if (query == null || query.isBlank()) {
+            return exerciseService.getAllExercises();
         }
 
         return exerciseService.searchExercises(query.trim());

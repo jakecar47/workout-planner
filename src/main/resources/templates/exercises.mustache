@@ -101,6 +101,18 @@
 let currentMatches = [];
 let activeIndex = -1;
 
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("exerciseSearch");
+    const list = document.getElementById("autocomplete-list");
+    input.addEventListener("focus", () => {
+        if (currentMatches.length === 0) {
+            loadAllExercises();
+        } else {
+            list.style.display = "block";
+        }
+    });
+});
+
 /* Auto-show dropdown when clicking input */
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("exerciseSearch");
@@ -157,6 +169,34 @@ function renderExerciseCard(exercise) {
 
     grid.style.display = "flex";
     prompt.style.display = "none";
+}
+
+function loadAllExercises() {
+    const list = document.getElementById("autocomplete-list");
+    fetch(`/api/exercises/search?query=`)
+        .then(resp => resp.json())
+        .then(data => {
+            currentMatches = data || [];
+            list.innerHTML = "";
+
+            currentMatches.forEach((ex, index) => {
+                const div = document.createElement("div");
+                div.className = "autocomplete-item";
+                div.innerText = ex.name;
+
+                div.onclick = () => {
+                    document.getElementById("exerciseSearch").value = ex.name;
+                    list.style.display = "none";
+                    renderExerciseCard(ex);
+                };
+
+                list.appendChild(div);
+            });
+
+            if (currentMatches.length > 0) {
+                list.style.display = "block";
+            }
+        });
 }
 
 /**
