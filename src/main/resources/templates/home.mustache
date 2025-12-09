@@ -1,4 +1,3 @@
-<!-- ...existing code... -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,8 +58,39 @@
 </div>
 
 <script>
+  // Save notes for a day (called by Save button)
+  function saveNotes(day) {
+    const notesEl = document.getElementById(`notes-${day}`);
+    const saveBtn = document.getElementById(`save-${day}`);
+    if (saveBtn) saveBtn.disabled = true;
+
+    const notes = notesEl ? notesEl.value : '';
+
+    fetch('/weekly-plan/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ day, notes })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Server error');
+      return response.json().catch(() => ({}));
+    })
+    .then(() => {
+      if (saveBtn) {
+        saveBtn.textContent = 'Saved';
+        setTimeout(() => { saveBtn.textContent = 'Save'; }, 900);
+      }
+    })
+    .catch(err => {
+      alert('Failed to save notes: ' + err.message);
+    })
+    .finally(() => {
+      if (saveBtn) saveBtn.disabled = false;
+    });
+  }
+
   // Clear notes in the DOM and request the server to clear the workout & notes for the day.
-  // Endpoint: POST /api/clear-day  with JSON body { day: "<day>" }
+  // Endpoint: POST /weekly-plan/clear  with JSON body { day: "<day>" }
   function clearDay(day) {
     const notesEl = document.getElementById(`notes-${day}`);
     const assignedEl = document.getElementById(`assigned-${day}`);
@@ -73,7 +103,7 @@
     if (assignedEl) assignedEl.innerHTML = '-- No workout assigned --';
 
     // Send request to server to persist the clear action.
-    fetch('/api/clear-day', {
+    fetch('/weekly-plan/clear', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ day })
@@ -83,15 +113,85 @@
       return response.json().catch(() => ({}));
     })
     .catch(err => {
-      // On error, notify user. Consider reloading or reverting UI if desired.
       alert('Failed to clear day: ' + err.message);
     })
     .finally(() => {
       if (clearBtn) clearBtn.disabled = false;
     });
   }
+
+  // Load weekly plan JSON and update DOM so newly assigned workouts (from assign_workout) show immediately
+  async function loadWeeklyPlanAndUpdate() {
+    try {
+      const res = await fetch('/weekly-plan', { credentials: 'same-origin' });
+      if (!res.ok) return;
+      const plan = await res.json(); // format: { "MON": { workoutId: 5, workoutName?: "Legs", notes: "..." }, ... }
+
+      // collect ids missing a name
+      const missingIds = new Set();
+      for (const [, entry] of Object.entries(plan || {})) {
+        if (entry && entry.workoutId && !entry.workoutName) missingIds.add(Number(entry.workoutId));
+      }
+
+      // helper map id -> name (if needed fetch all via API)
+      const idToName = {};
+      if (missingIds.size > 0) {
+        try {
+          const resp = await fetch('/workouts/api/search', { credentials: 'same-origin' }); // include credentials
+          if (resp.ok) {
+            const all = await resp.json();
+            (all || []).forEach(w => {
+              if (w && (w.id != null)) {
+                idToName[String(w.id)] = w.name || w.workoutName || '';
+              }
+            });
+          }
+        } catch (e) {
+          // swallow - we'll fallback to "Workout <id>"
+        }
+      }
+
+      for (const [day, entry] of Object.entries(plan || {})) {
+        try {
+          const assignedEl = document.getElementById(`assigned-${day}`);
+          const notesEl = document.getElementById(`notes-${day}`);
+          if (assignedEl) {
+            if (entry && entry.workoutId) {
+              // prefer explicit workoutName from plan, then lookup, then friendly fallback
+              const key = String(entry.workoutId);
+              const name = entry.workoutName || idToName[key] || (`Workout ${entry.workoutId}`);
+              assignedEl.innerHTML = `<a href="/workouts/${entry.workoutId}" class="workout-link">${escapeHtml(name)}</a>`;
+            } else {
+              assignedEl.innerHTML = '-- No workout assigned --';
+            }
+          }
+          if (notesEl) {
+            notesEl.value = (entry && entry.notes) ? entry.notes : '';
+          }
+        } catch (e) {
+          // ignore per-day update errors
+        }
+      }
+    } catch (e) {
+      console.debug('Unable to refresh weekly plan:', e);
+    }
+  }
+
+  // simple HTML escape for injected names
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // refresh plan on load so assignments made in assign_workout show up after redirect
+  document.addEventListener('DOMContentLoaded', function() {
+    loadWeeklyPlanAndUpdate();
+  });
 </script>
 
 </body>
 </html>
-<!-- ...existing code... -->

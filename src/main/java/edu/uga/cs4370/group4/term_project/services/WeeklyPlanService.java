@@ -1,7 +1,10 @@
 package edu.uga.cs4370.group4.term_project.services;
 
 import edu.uga.cs4370.group4.term_project.models.WeeklyPlan;
+import edu.uga.cs4370.group4.term_project.models.Workout;
 import edu.uga.cs4370.group4.term_project.repositories.WeeklyPlanRepository;
+import edu.uga.cs4370.group4.term_project.repositories.WorkoutRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,23 +24,40 @@ public class WeeklyPlanService {
 
     private final WeeklyPlanRepository repository;
     private final DataSource dataSource;
+    private UserService userService; // for current user lookup
+    private WorkoutRepository workoutRepository; // for resolving workout names
 
     @Autowired
-    public WeeklyPlanService(WeeklyPlanRepository repository, DataSource dataSource) {
+    public WeeklyPlanService(WeeklyPlanRepository repository, DataSource dataSource, UserService userService, WorkoutRepository workoutRepository) {
         this.repository = repository;
         this.dataSource = dataSource;
+        this.userService = userService;
+        this.workoutRepository = workoutRepository;
     }
 
-    /**
-     * Returns a map keyed by day -> { workoutId, notes } for the given user.
-     * workoutId will be null if the stored value is 0 (no workout assigned).
-     */
+    // Ensure the schedule returned to the client includes workoutName (if available)
     public Map<String, Map<String, Object>> getScheduleForUser(int userId) {
         List<WeeklyPlan> rows = repository.findByUserId(userId);
         Map<String, Map<String, Object>> schedule = new HashMap<>();
         for (WeeklyPlan r : rows) {
             Map<String, Object> entry = new HashMap<>();
-            entry.put("workoutId", r.getWorkoutId() == 0 ? null : r.getWorkoutId());
+            Integer wid = r.getWorkoutId(); // workoutIds are ints in DB
+            if (wid != null) {
+                entry.put("workoutId", wid);
+                try {
+                    Optional<Workout> maybe = Optional.ofNullable(workoutRepository.getWorkoutById(wid));
+                    if (maybe.isPresent()) {
+                        entry.put("workoutName", maybe.get().getName());
+                    } else {
+                        entry.put("workoutName", null);
+                    }
+                } catch (Throwable ignored) {
+                    entry.put("workoutName", null);
+                }
+            } else {
+                entry.put("workoutId", null);
+                entry.put("workoutName", null);
+            }
             entry.put("notes", r.getNotes());
             schedule.put(r.getDay(), entry);
         }
@@ -49,8 +69,12 @@ public class WeeklyPlanService {
      * to satisfy the NOT NULL constraint defined in the table.
      */
     public void saveEntry(int userId, String day, Integer workoutId, String notes) {
-        int wid = workoutId == null ? 0 : workoutId;
-        WeeklyPlan wp = new WeeklyPlan(null, userId, day, wid, notes, null);
+        // normalize inputs
+        String safeNotes = notes == null ? "" : notes;
+
+        // create WeeklyPlan with nullable workoutId (WeeklyPlan model must use Integer for workoutId)
+        WeeklyPlan wp = new WeeklyPlan(null, userId, day, workoutId, safeNotes, null);
+
         repository.upsert(wp);
     }
 
@@ -125,75 +149,51 @@ public class WeeklyPlanService {
      * ----------------------------------------------------- */
     public boolean assignWorkoutToDayForCurrentUser(String day, Long workoutId) {
         // resolve current authenticated username
-        String username = null;
+        Integer userId = null;
         try {
-            // try to get username from Spring Security if present
-            Class.forName("org.springframework.security.core.context.SecurityContextHolder");
+            if (userService != null && userService.isAuthenticated()) {
+                var u = userService.getLoggedInUser();
+                if (u != null) {
+                    userId = u.getId();
+                }
+            }
+        } catch (Throwable ignored) { }
+
+        // fallback: try SecurityContextHolder (legacy path)
+        if (userId == null) {
             try {
                 org.springframework.security.core.Authentication auth =
                         org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
-                if (auth != null) {
-                    username = auth.getName();
-                }
-            } catch (Throwable t) {
-                // ignore - not running with Spring Security
-                username = null;
-            }
-        } catch (ClassNotFoundException ignored) {
-            // Spring Security not on classpath
-            username = null;
-        }
-
-        Integer userId = null;
-        if (username != null) {
-            String lookupSql = "SELECT id FROM users WHERE username = ?";
-            try (Connection conn = dataSource.getConnection();
-                 PreparedStatement ps = conn.prepareStatement(lookupSql)) {
-                ps.setString(1, username);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        userId = rs.getInt("id");
+                if (auth != null && auth.isAuthenticated() && !(auth instanceof org.springframework.security.authentication.AnonymousAuthenticationToken)) {
+                    String username = auth.getName();
+                    String lookupSql = "SELECT id FROM users WHERE username = ?";
+                    try (Connection conn = dataSource.getConnection();
+                         PreparedStatement ps = conn.prepareStatement(lookupSql)) {
+                        ps.setString(1, username);
+                        try (ResultSet rs = ps.executeQuery()) {
+                            if (rs.next()) {
+                                userId = rs.getInt("id");
+                            }
+                        }
                     }
                 }
-            } catch (SQLException e) {
-                System.out.println("Error looking up current user id: " + e.getMessage());
-                return false;
-            }
+            } catch (Throwable ignored) { }
         }
 
-        // If we couldn't resolve user id, fail fast
         if (userId == null) {
             System.out.println("assignWorkoutToDayForCurrentUser: current user not found");
             return false;
         }
 
-        int wId = workoutId == null ? 0 : workoutId.intValue();
+        Integer wid = workoutId == null ? null : workoutId.intValue();
 
-        String updateSql = "UPDATE weekly_plans SET workout_id = ? WHERE user_id = ? AND day = ?";
-        String insertSql = "INSERT INTO weekly_plans (user_id, day, workout_id) VALUES (?, ?, ?)";
-
-        try (Connection conn = dataSource.getConnection()) {
-            // try update
-            try (PreparedStatement ps = conn.prepareStatement(updateSql)) {
-                ps.setInt(1, wId);
-                ps.setInt(2, userId);
-                ps.setString(3, day);
-                int updated = ps.executeUpdate();
-                if (updated > 0) {
-                    return true;
-                }
-            }
-
-            // no existing row, insert
-            try (PreparedStatement ps2 = conn.prepareStatement(insertSql)) {
-                ps2.setInt(1, userId);
-                ps2.setString(2, day);
-                ps2.setInt(3, wId);
-                return ps2.executeUpdate() > 0;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error assigning workout to day: " + e.getMessage());
+        // Use repository.upsert to persist (keeps DB schema consistent)
+        try {
+            WeeklyPlan wp = new WeeklyPlan(null, userId, day, wid, "", null);
+            repository.upsert(wp);
+            return true;
+        } catch (Throwable t) {
+            System.out.println("Error assigning workout to day: " + t.getMessage());
             return false;
         }
     }

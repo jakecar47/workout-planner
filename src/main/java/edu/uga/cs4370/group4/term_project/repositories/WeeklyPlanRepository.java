@@ -110,8 +110,14 @@ public class WeeklyPlanRepository {
 
             stmt.setInt(1, wp.getUserId());
             stmt.setString(2, wp.getDay());
-            // workout_id is NOT NULL by DDL — callers should pass 0 when no workout assigned
-            stmt.setInt(3, wp.getWorkoutId());
+
+            // bind workout_id as NULL when no workout assigned
+            Integer wid = wp.getWorkoutId();
+            if (wid != null) {
+                stmt.setInt(3, wid);
+            } else {
+                stmt.setNull(3, Types.INTEGER);
+        }
 
             if (wp.getNotes() == null) {
                 stmt.setNull(4, Types.VARCHAR);
@@ -125,6 +131,7 @@ public class WeeklyPlanRepository {
             throw new RuntimeException("Failed to upsert weekly plan entry: " + wp, e);
         }
     }
+
 
     public void deleteByUserIdAndDay(int userId, String day) {
         String sql = "DELETE FROM weekly_plan WHERE user_id = ? AND day = ?";

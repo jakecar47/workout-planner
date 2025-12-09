@@ -141,4 +141,32 @@ public class WorkoutRepository {
 
         return results;
     }  
+
+    // GET ALL WORKOUTS
+    public List<Workout> findAll() {
+        List<Workout> results = new ArrayList<>();
+        String sql = "SELECT * FROM workouts ORDER BY created_at DESC";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Workout w = new Workout(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("user_id"),
+                    rs.getString("description"),
+                    rs.getString("startTime"),
+                    rs.getString("endTime"),
+                    rs.getTimestamp("created_at").toString()
+                );
+
+                results.add(w);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving all workouts: " + e.getMessage());
+        }
+        return results;
+    }
 }

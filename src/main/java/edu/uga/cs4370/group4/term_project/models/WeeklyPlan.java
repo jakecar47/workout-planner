@@ -8,13 +8,13 @@ public class WeeklyPlan {
     private Integer id;
     private int userId;
     private String day;
-    private int workoutId;
+    private Integer workoutId;
     private String notes;
     private LocalDateTime createdAt;
 
     public WeeklyPlan() {}
 
-    public WeeklyPlan(Integer id, int userId, String day, int workoutId, String notes, LocalDateTime createdAt) {
+    public WeeklyPlan(Integer id, int userId, String day, Integer workoutId, String notes, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
         this.day = day;
@@ -47,11 +47,11 @@ public class WeeklyPlan {
         this.day = day;
     }
 
-    public int getWorkoutId() {
+    public Integer getWorkoutId() {
         return workoutId;
     }
 
-    public void setWorkoutId(int workoutId) {
+    public void setWorkoutId(Integer workoutId) {
         this.workoutId = workoutId;
     }
 

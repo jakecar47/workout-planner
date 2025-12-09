@@ -72,7 +72,7 @@ create table if not exists weekly_plan (
     id int auto_increment,
     user_id int not null,
     day varchar(20) not null,
-    workout_id int not null,
+    workout_id int,
     notes text,
     created_at timestamp default current_timestamp,
     primary key(id),

@@ -38,10 +38,6 @@ public class HomeController {
         this.weeklyPlanService = weeklyPlanService;
     }
 
-    /*
-    ...existing code...
-    */
-
     @GetMapping("/")
     public String homePage(Model model) {
         if (!userService.isAuthenticated()) {
@@ -172,20 +168,4 @@ public class HomeController {
         weeklyPlanService.clearEntry(user.getId(), day);
         return ResponseEntity.ok(Map.of("status","cleared"));
     }
-
-    /**
-     * Delete a day's entry for the logged in user.
-     * Accepts form param or query param 'day'.
-     */
-    @PostMapping("/weekly-plan/delete")
-    @ResponseBody
-    public ResponseEntity<?> deleteWeeklyPlanEntry(@RequestParam("day") String day) {
-        if (!userService.isAuthenticated()) {
-            return ResponseEntity.status(401).body("Unauthorized");
-        }
-        User user = userService.getLoggedInUser();
-        weeklyPlanService.deleteEntry(user.getId(), day);
-        return ResponseEntity.ok(Map.of("status","deleted"));
-    }
-
 }

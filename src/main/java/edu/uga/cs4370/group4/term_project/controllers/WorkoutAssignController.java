@@ -62,7 +62,6 @@ public class WorkoutAssignController {
     }
     
     // Perform search and re-render the page with results (preserves day)
-    // Perform search and re-render the page with results (preserves day)
     @GetMapping("/search")
     public String search(@RequestParam(name = "q", required = false) String q,
                          @RequestParam(name = "day", required = false) String day,
@@ -70,7 +69,8 @@ public class WorkoutAssignController {
 
         List<Workout> results;
         if (q == null || q.trim().isEmpty()) {
-            results = List.of();
+            // return all workouts when query is empty
+            results = workoutRepository.findAll();
         } else {
             results = workoutRepository.findByNameContainingIgnoreCase(q.trim());
         }
@@ -79,6 +79,24 @@ public class WorkoutAssignController {
         model.addAttribute("q", q == null ? "" : q);
         model.addAttribute("day", day == null ? "" : day);
         return "assign_workout";
+    }
+
+    @GetMapping("/api/search")
+    @ResponseBody
+    public List<Map<String,Object>> apiSearch(@RequestParam(name = "q", required = false) String q) {
+        // return all workouts when q is empty (so empty search shows all)
+        var results = (q == null || q.trim().isEmpty())
+                ? workoutRepository.findAll()
+                : workoutRepository.findByNameContainingIgnoreCase(q.trim());
+
+        return results.stream()
+                .map(w -> {
+                    Map<String, Object> m = new java.util.HashMap<>();
+                    m.put("id", w.getId());
+                    m.put("name", w.getName());
+                    return m;
+                })
+                .collect(Collectors.toList());
     }
 
     // Assign chosen workout to the user's specified day, then redirect to home
@@ -97,21 +115,6 @@ public class WorkoutAssignController {
             ra.addFlashAttribute("error", "Failed to assign workout: " + ex.getMessage());
         }
         return "redirect:/";
-    }
-
-    @GetMapping("/api/search")
-    @ResponseBody
-    public List<Map<String,Object>> apiSearch(@RequestParam(name = "q", required = false) String q) {
-        if (q == null || q.trim().isEmpty()) return List.of();
-        var results = workoutRepository.findByNameContainingIgnoreCase(q.trim());
-        return results.stream()
-                .map(w -> {
-                    Map<String, Object> m = new java.util.HashMap<>();
-                    m.put("id", w.getId());
-                    m.put("name", w.getName());
-                    return m;
-                })
-                .collect(Collectors.toList());
     }
 
     @PostMapping("/assign/none")
