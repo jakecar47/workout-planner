@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Workout</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+{{> fragments/nav_bar}}
+
+<div class="page-container">
+
+    <h1 class="section-title">Search Workouts to Assign</h1>
+
+    <!-- SEARCH INPUT (no search button) -->
+    <div class="auth-container" style="width:100%; max-width:600px;">
+        <input
+            id="workoutSearch"
+            type="text"
+            name="q"
+            placeholder="Search by name or keyword"
+            autocomplete="off"
+            value="{{q}}"
+            style="width:100%;"
+            autofocus
+        >
+        <input type="hidden" name="day" id="dayInput" value="{{day}}">
+
+        <!-- centered Cancel button below the search bar -->
+        <div style="display:flex; justify-content:center; margin-top:12px;">
+            <button type="button" class="black-button" onclick="window.location.href='/'">Cancel</button>
+        </div>
+    </div>
+
+    <!-- SEARCH RESULTS (rendered client-side via /workouts/api/search) -->
+    <!-- scrollable: show approx 6 items at a time -->
+    <div id="resultsContainer" class="table-container"
+         style="margin-top:18px; max-width:800px; max-height:420px; overflow-y:auto;">
+        <!-- client-side will inject result items here -->
+    </div>
+
+</div>
+
+<script>
+/**
+ * Perform a search using the JSON API and render results.
+ * When the query is empty, fetch all workouts. If the server treats missing q differently,
+ * fall back to calling the API without the q param.
+ */
+ // on load: show all workouts (send explicit empty q) and ensure focus is set to the input
+(function init() {
+    const input = document.getElementById('workoutSearch');
+    // ensure focus after render; use timeout to guarantee focus works across browsers
+    if (input) {
+        setTimeout(() => {
+            try {
+                input.focus();
+                if (input.select) input.select();
+            } catch (e) { /* ignore */ }
+        }, 0);
+    }
+
+    const initialQ = "{{q}}";
+    if (initialQ && initialQ.trim() !== "") {
+        if (input) input.value = initialQ;
+        performSearch(initialQ);
+    } else {
+        performSearch(''); // explicit empty query to request all workouts
+    }
+})();
+
+async function performSearch(q) {
+    const query = (typeof q === 'string') ? q.trim() : document.getElementById('workoutSearch').value.trim();
+    const day = document.getElementById('dayInput').value || '';
+    const container = document.getElementById('resultsContainer');
+
+    container.innerHTML = '<div style="color:#999; padding:12px;">Searching…</div>';
+
+    try {
+        // Always send q (may be empty string). Some server handlers treat missing vs empty differently,
+        // so if this returns empty and query is '', try without q as fallback.
+        const urlWithQ = '/workouts/api/search?q=' + encodeURIComponent(query);
+        let resp = await fetch(urlWithQ, { credentials: 'same-origin' });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        let data = await resp.json();
+
+        // fallback: if we asked for all (empty q) but got empty array, try endpoint without q param
+        if ((!Array.isArray(data) || data.length === 0) && query === '') {
+            try {
+                resp = await fetch('/workouts/api/search', { credentials: 'same-origin' });
+                if (resp.ok) {
+                    data = await resp.json();
+                }
+            } catch (e) {
+                // ignore fallback error; keep data as-is
+            }
+        }
+
+        renderResults(Array.isArray(data) ? data : [], day);
+    } catch (err) {
+        console.error('Error fetching search results:', err);
+        container.innerHTML = '<div style="color:#ccc; text-align:center; padding:18px 6px;">Failed to load results.</div>';
+    }
+}
+
+/**
+ * Render results (array of {id,name,description,startTime,endTime})
+ * Workout name is yellow and clickable (navigates to workout page) but not styled as a typical link.
+ * Each row is sized so the container shows ~6 items and is scrollable.
+ */
+function renderResults(list, day) {
+    const container = document.getElementById('resultsContainer');
+    container.innerHTML = '';
+
+    if (!Array.isArray(list) || list.length === 0) {
+        container.innerHTML = '<div style="color:#ccc; text-align:center; padding:18px 6px;">No results. Try a different search.</div>';
+        return;
+    }
+
+    list.forEach(w => {
+        const row = document.createElement('div');
+        // fixed-ish height to make the container show about 6 items
+        row.style.display = 'flex';
+        row.style.alignItems = 'center';
+        row.style.justifyContent = 'space-between';
+        row.style.padding = '10px 12px';
+        row.style.background = 'rgba(255,255,255,0.02)';
+        row.style.borderRadius = '8px';
+        row.style.marginBottom = '8px';
+        row.style.minHeight = '60px';
+        row.style.boxSizing = 'border-box';
+
+        const info = document.createElement('div');
+        info.style.flex = '1';
+        info.style.cursor = 'default';
+
+        const title = document.createElement('div');
+        title.style.color = '#FFD54F';
+        title.style.fontWeight = '700';
+        title.style.fontSize = '1rem';
+        title.style.cursor = 'pointer';
+        title.style.display = 'inline-block';
+        title.textContent = w.name || '';
+
+        // navigate to workout page on click; accessible via Enter key
+        title.addEventListener('click', () => {
+            window.location.href = `/workouts/${w.id}`;
+        });
+        title.tabIndex = 0;
+        title.setAttribute('role', 'link');
+        title.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.location.href = `/workouts/${w.id}`;
+            }
+        });
+
+        info.appendChild(title);
+
+        if (w.description) {
+            const desc = document.createElement('div');
+            desc.style.color = 'var(--muted)';
+            desc.style.fontSize = '0.95rem';
+            desc.style.marginTop = '6px';
+            desc.textContent = w.description;
+            info.appendChild(desc);
+        }
+        if (w.startTime) {
+            const st = document.createElement('div');
+            st.style.color = 'var(--muted)';
+            st.style.fontSize = '0.9rem';
+            st.style.marginTop = '6px';
+            st.textContent = 'Start: ' + w.startTime;
+            info.appendChild(st);
+        }
+        if (w.endTime) {
+            const et = document.createElement('div');
+            et.style.color = 'var(--muted)';
+            et.style.fontSize = '0.9rem';
+            et.style.marginTop = '4px';
+            et.textContent = 'End: ' + w.endTime;
+            info.appendChild(et);
+        }
+
+        const actions = document.createElement('div');
+        actions.style.display = 'flex';
+        actions.style.gap = '8px';
+        actions.style.alignItems = 'center';
+        actions.style.marginLeft = '12px';
+
+        // create a form to POST to /workouts/assign so server handles assignment as before
+        const form = document.createElement('form');
+        form.action = '/workouts/assign';
+        form.method = 'POST';
+        form.style.display = 'inline';
+
+        const hid1 = document.createElement('input');
+        hid1.type = 'hidden';
+        hid1.name = 'workoutId';
+        hid1.value = w.id;
+        form.appendChild(hid1);
+
+        const hid2 = document.createElement('input');
+        hid2.type = 'hidden';
+        hid2.name = 'day';
+        hid2.value = day;
+        form.appendChild(hid2);
+
+        const assignBtn = document.createElement('button');
+        assignBtn.className = 'black-button';
+        assignBtn.type = 'submit';
+        assignBtn.textContent = 'Assign';
+        form.appendChild(assignBtn);
+
+        actions.appendChild(form);
+
+        row.appendChild(info);
+        row.appendChild(actions);
+        container.appendChild(row);
+    });
+}
+
+/**
+ * Debounce helper
+ */
+function debounce(fn, delay) {
+    let t;
+    return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+// live update on each character typed (debounced)
+const searchInput = document.getElementById('workoutSearch');
+if (searchInput) {
+    const debounced = debounce(() => performSearch(), 150);
+    searchInput.addEventListener('input', debounced);
+}
+
+</script>
+
+</body>
+</html>

@@ -620,8 +620,229 @@ table tr:hover {
 }
 
 .black-button.danger {
-    background: #444;
+    background:#cc4a4a; 
+    padding:6px 10px;
 }
 .black-button.danger:hover {
-    background: #666;
+    background: #cc4a4ad9;
+}
+
+/* GLOBAL RESET / BASE (additional adjustments for mustache templates) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body, #app {
+  height: 100%;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #0f1724;
+  color: #e6eef8;
+  line-height: 1.35;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Explicitly constrain logo and profile avatar used in templates */
+.navbar .nav-left img.nav-logo,
+.logo-img,
+.navbar .site-logo {
+  height: 36px;
+  width: auto;
+  max-height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.navbar .nav-right img,
+.profile-pic {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* THEME VARIABLES & RESPONSIVE SIZING */
+:root{
+  --bg: #0f1724;
+  --panel: #0b1220;
+  --muted: #9aa6bd;
+  --text: #e6eef8;
+  --accent: #00bfff;
+  --danger: #cc4a4a;
+  --btn-padding-vertical: 6px;
+  --btn-padding-horizontal: 10px;
+  --border-radius: 8px;
+  --shadow-1: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+/* GENERIC BUTTONS (harmonize with existing .black-button) */
+.button,
+.black-button {
+  display: inline-block;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: var(--btn-padding-vertical) var(--btn-padding-horizontal);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .08s ease, box-shadow .12s ease, opacity .12s ease, filter .08s ease;
+  box-shadow: var(--shadow-1);
+  font-size: 0.95rem;
+  line-height: 1;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+.black-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.black-button[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ASSIGNED DISPLAY / WORKOUT LINK (ensure consistent look in templates) */
+.assigned-display {
+  color: var(--muted);
+  font-size: 0.95rem;
+  padding: 6px 2px;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.assigned-display .workout-link {
+  color: #3dff89 !important;
+  font-weight: 700;
+  text-decoration: none !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.assigned-display .workout-link:link,
+.assigned-display .workout-link:visited,
+.assigned-display .workout-link:hover,
+.assigned-display .workout-link:focus,
+.assigned-display .workout-link:active {
+  color: #3dff89 !important;
+  text-decoration: none !important;
+  outline: none;
+}
+
+/* WRAPPERS & HELPERS */
+.assign-actions {
+  margin-top: 8px;
+}
+
+.assign-actions .black-button {
+  width: 100%;
+}
+
+.save-row {
+  margin-top: 8px;
+}
+
+.actions-cell {
+  white-space: nowrap;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* NOTES TEXTAREA */
+.notes-input {
+  width: 100%;
+  resize: vertical;
+  min-height: 52px;
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.notes-input::placeholder {
+  color: rgba(255,255,255,0.22);
+}
+
+.notes-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(0,191,255,0.06);
+}
+
+.workout-select:focus,
+.black-button:focus {
+  outline: 3px solid rgba(0,191,255,0.12);
+  outline-offset: 2px;
+}
+
+/* SMALL-SCREEN TABLE ADJUSTMENTS */
+.day-cell {
+  font-weight: 700;
+  color: var(--muted);
+  width: 110px;
+}
+
+.weekly-table tr:hover {
+  background: rgba(255,255,255,0.01);
+}
+
+@media (max-width: 560px) {
+  .weekly-table thead {
+    display: none;
+  }
+  .weekly-table tr {
+    display: block;
+    margin-bottom: 12px;
+  }
+  .weekly-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .actions-cell {
+    justify-content: flex-start;
+  }
+}
+
+/* Accessibility focus for logo link */
+.logo-link:focus {
+  outline: 3px solid rgba(0,191,255,0.12);
+  outline-offset: 2px;
+}
+
+/* Small utility */
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+
+.table-container {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+/* Center results in assign_workout.mustache */
+#resultsContainer {
+    margin: 18px auto;               /* center horizontally */
+    max-width: 500px;
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;  
+    width: 100%;          
+    gap: 8px;
+    padding: 8px;
 }

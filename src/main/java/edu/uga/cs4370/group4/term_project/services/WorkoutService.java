@@ -1,22 +1,29 @@
 package edu.uga.cs4370.group4.term_project.services;
 
 import edu.uga.cs4370.group4.term_project.models.Workout;
+import edu.uga.cs4370.group4.term_project.repositories.WorkoutRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkoutService {
 
     private final DataSource dataSource;
+    private final WorkoutRepository workoutRepository;
 
     @Autowired
-    public WorkoutService(DataSource dataSource) {
+    public WorkoutService(DataSource dataSource, WorkoutRepository workoutRepository) {
         this.dataSource = dataSource;
+        this.workoutRepository = workoutRepository;
     }
 
     /** -----------------------------------------------------
@@ -194,4 +201,33 @@ public class WorkoutService {
             return false;
         }
     }
+
+    // Search workouts by query
+    public List<Workout> searchWorkouts(String q) {
+        if (q == null || q.trim().isEmpty()) {
+            return workoutRepository.findAll();
+        }
+        return workoutRepository.findByNameContainingIgnoreCase(q.trim());
+    }
+
+    /**
+     * API mapping used by client-side autocomplete / fetch calls.
+     * Returns a list of simple maps { id, name, description, startTime, endTime }.
+     */
+    public List<Map<String, Object>> apiSearchMap(String q) {
+        List<Workout> list = searchWorkouts(q);
+        return list.stream()
+                .map(w -> {
+                    Map<String, Object> m = new HashMap<>();
+                    m.put("id", w.getId());
+                    m.put("name", w.getName());
+                    m.put("description", w.getDescription());
+                    m.put("startTime", w.getStartTime());
+                    m.put("endTime", w.getEndTime());
+                    return m;
+                })
+                .collect(Collectors.toList());
+    }
+
+    
 }
