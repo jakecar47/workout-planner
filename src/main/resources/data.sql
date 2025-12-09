@@ -11,17 +11,6 @@ INSERT INTO users (email, uname, password) VALUES
 ('alex@example.com', 'alex', '$2a$10$AlW8dxharaMhyjgNULMd5OgP50ceJtBsmCTjEPmtnfk1BLvbUmayG');
 
 -- ==========================
--- EXERCISES (Loaded from dataset)
--- ==========================
-DROP TABLE IF EXISTS staging_exercises;
-CREATE TABLE staging_exercises (
-    name VARCHAR(255),
-    target_muscle VARCHAR(255),
-    image_path VARCHAR(255),
-    description TEXT
-);
-
--- ==========================
 -- WORKOUTS (VALID USERS)
 -- ==========================
 INSERT INTO workouts (id, user_id, name, description, startTime, endTime, created_at) VALUES
