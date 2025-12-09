@@ -1,3 +1,14 @@
 datasource.txt describes the source of your data. Link to the data if you used an existing dataset. 
 A description of how you generated data if you created/used a program to generate data.
 ---
+This is the link to the datasource: https://www.kaggle.com/datasets/hemandas/exercise-animation-gif/data
+
+This datasource contained a complete dataset of around 1318 exercises, most of them with working gifs,
+the target muscle, and a description of the exercise.
+
+To implement it, we first downloaded it, but it didn't fit our schema, so we went through, in excel, and deleted
+and rearranged the rows. Then, we moved the file into uploads/exercises and used an absolute path to pull from the 
+datasource. After struggling with changing the absolute path across partners, we moved the dataset into 
+src\main\...\resources\datasets, and designed a DataLoader using Apache Commons CSV to parse the information, and
+use a sql statement to insert the parsed information into the exercises table.
+

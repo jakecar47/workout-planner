@@ -21,6 +21,16 @@ INSERT INTO workouts (id, user_id, name, description, startTime, endTime, create
 (5, 2, 'Full Body B', 'Alternate full-body session', '2025-12-05 18:30:00', '2025-12-05 20:00:00', '2025-12-05 18:15:00'),
 (6, 3, 'Arms and Shoulders', 'Upper arm isolation', '2025-12-06 14:00:00', '2025-12-06 15:30:00', '2025-12-06 13:45:00');
 
+-- ============================================================
+-- EXERCISES TABLE DATA
+-- This table is populated automatically by the DataLoader.java
+-- using the dataset located in:
+-- src/main/resources/datasets/exercises_prepared.csv
+--
+-- The dataset contains 1300+ rows, so it is not inserted manually.
+-- The DataLoader handles INSERT / UPSERT at application startup.
+-- ============================================================
+
 -- ==========================
 -- WORKOUT_EXERCISES (BASE)
 -- ==========================
