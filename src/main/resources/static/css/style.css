@@ -722,7 +722,7 @@ body {
 }
 
 .assigned-display .workout-link {
-  color: #3dff89 !important;
+  color: #ffd54f !important;
   font-weight: 700;
   text-decoration: none !important;
   background: transparent;
@@ -735,7 +735,7 @@ body {
 .assigned-display .workout-link:hover,
 .assigned-display .workout-link:focus,
 .assigned-display .workout-link:active {
-  color: #3dff89 !important;
+  color: #ffd54f !important;
   text-decoration: none !important;
   outline: none;
 }
