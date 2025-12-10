@@ -46,7 +46,13 @@ Barrett Giesbrecht
  - Additional debugging and backend support throughout the project
 
 Reshi Manivannan
- - 
+ - Developed Substantial part of the backend including Models, Repositories, Controllers, and Services
+ - Implemented Parts of the Exercises Page
+ -    Developed Add Exercise Wizard
+ -       Exercise Card layout
+ -       Fuzzy Search Bar implementation
+ -       Image uploads for the Exercise Wizard
+ - Contributed to UI appearance and consistency across pages in style.css
 
 How to run:
 1. Create Docker Container with (if not done already):
