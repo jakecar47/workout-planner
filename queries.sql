@@ -13,7 +13,7 @@ INSERT INTO exercises (name, target_muscle, description, image_path)
             VALUES (?, ?, ?, ?);
 
 -- retrieves all exercises ordered by name
--- NOT USED, REMOVE?
+-- /workouts/{id}, /profile, /api/exercises/search
 SELECT id, name, target_muscle, description, image_path
             FROM exercises
             ORDER BY name ASC;
@@ -24,12 +24,6 @@ SELECT id, name, target_muscle, description, image_path
             FROM exercises
             WHERE LOWER(name) LIKE ?
             ORDER BY name ASC;
-
--- retrieves exercise by id
--- NOT USED, REMOVE?
-SELECT id, name, target_muscle, description, image_path
-            FROM exercises
-            WHERE id = ?;
 
 -- updates an existing exercise
 UPDATE exercises
