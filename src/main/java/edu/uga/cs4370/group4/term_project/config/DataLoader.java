@@ -29,7 +29,7 @@ public class DataLoader implements CommandLineRunner {
                 new InputStreamReader(csvFile.getInputStream())
         );
 
-        // ⭐ Modern CSVFormat builder (no deprecated methods)
+        // Modern CSVFormat builder
         CSVFormat format = CSVFormat.DEFAULT
                 .builder()
                 .setHeader()                 // same as withFirstRecordAsHeader

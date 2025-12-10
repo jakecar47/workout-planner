@@ -25,6 +25,8 @@ http://localhost:8081/
 
 Technologies used:
  - Java
+ - Apache Maven
+ - Docker Desktop
  - Spring Boot Starter Mustache
  - Spring Boot Starter Security
  - Spring Boot Starter Web
@@ -33,7 +35,6 @@ Technologies used:
  - Spring Boot Starter Test
  - Spring Security Test
  - Spring Boot Maven Plugin
- - 
 
 JDBC Connection:
 name:workout_app

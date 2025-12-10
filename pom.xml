@@ -90,6 +90,8 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- For reading and writing CSV files -->
+        <!-- https://commons.apache.org/proper/commons-csv/ -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
