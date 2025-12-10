@@ -56,7 +56,7 @@ public class ProfileController {
     }
 
     /* ------------------------------------------------------
-     * ADD GOAL
+     * ADD GOAL - NOT USED
      * ------------------------------------------------------ */
     @PostMapping("/profile/add-goal")
     public String addGoal(@RequestParam String description,
