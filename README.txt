@@ -91,3 +91,7 @@ password: pass123
 Test Account 3:
 username: alex
 password: pass123
+
+External Libraries:
+Instructor permission email subject line: Permission to use Apache Commons CSV
+Library: org.apache.commons:commons-csv
