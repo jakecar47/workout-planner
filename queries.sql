@@ -43,25 +43,9 @@ INSERT INTO goals (description, user_id, exercise_id) VALUES (?, ?, ?);
 SELECT id, user_id, description, exercise_id, created_at
             FROM goals WHERE user_id = ? ORDER BY COALESCE(completed, 0) DESC, created_at DESC;
 
--- retrieves all goals for a user ordered by creation date
--- NOT USED, REMOVE
-SELECT id, description, user_id, exercise_id, created_at
-            FROM goals
-            WHERE user_id = ?
-            ORDER BY created_at DESC;
-
 -- toggles goal completion status
 -- /goals/toggle/{id}
 UPDATE goals SET completed = NOT IFNULL(completed, 0) WHERE id = ? AND user_id = ?;
-
--- gets a goal by id
--- not used
-SELECT id, description, user_id, exercise_id, created_at, completed
-            FROM goals WHERE id = ?;
-
--- updates an existing goal
--- not used
-UPDATE goals SET description = ?, exercise_id = ? WHERE id = ?;
 
 -- deletes a goal by id
 -- /goals/delete/{id}
@@ -71,35 +55,9 @@ DELETE FROM goals WHERE id = ?;
 -- /register
 INSERT INTO users (email, uname, password) VALUES (?, ?, ?);
 
--- retrieves a user by email
--- not used
-SELECT * FROM users WHERE email = ?;
-
--- retrieves a user by id
--- not used
-SELECT * FROM users WHERE id = ?;
-
--- retrieves user id by username
--- not used
-SELECT id FROM users WHERE uname = ?;
-
--- retrieves user id by email
--- not used
-SELECT id FROM users WHERE email = ?;
-
 -- retrieves a user by username
 -- /login
 SELECT id, email, uname, password, created_at FROM users WHERE uname = ?;
-
--- retrieves a user by id
--- not used
-SELECT id, email, uname, password, created_at FROM users WHERE id = ?;
-
--- updates an existing workout
--- not used
-UPDATE workouts
-SET name = ?, description = ?, startTime = ?, endTime = ?
-WHERE id = ?;
 
 -- schedules or updates a workout in the weekly plan
 -- /weekly-plan
@@ -107,11 +65,6 @@ INSERT INTO weekly_plan (user_id, day, workout_id, notes)
 VALUES (?, ?, ?, ?)
 ON DUPLICATE KEY UPDATE workout_id = VALUES(workout_id),
                         notes = VALUES(notes), created_at = CURRENT_TIMESTAMP;
-
--- removes a workout from the weekly plan
--- not used
-DELETE FROM weekly_plan
-WHERE user_id = ? AND day = ?;
 
 -- retrieves a workout by id
 -- /
@@ -130,10 +83,6 @@ SELECT id, user_id, day, workout_id, notes, created_at
             FROM weekly_plan
             WHERE user_id = ? AND day = ?
             LIMIT 1;
-
--- retrieves the weekly plan for a user
--- not used
-SELECT * FROM weekly_plan WHERE user_id = ?;
 
 -- retrieves user id by username
 -- /assign
@@ -158,21 +107,10 @@ SELECT
             WHERE we.workout_id = ?
             ORDER BY e.name ASC;
 
--- update workout exercise
--- not used
-UPDATE workout_exercises
-            SET time = ?, sets = ?, reps = ?
-            WHERE workout_id = ? AND exercise_id = ?;
-
 -- deletes an exercise from a workout
 -- /workouts/{id}/remove-exercise
 DELETE FROM workout_exercises
             WHERE workout_id = ? AND exercise_id = ?;
-
--- deletes all exercises from a workout
--- not used
-DELETE FROM workout_exercises
-            WHERE workout_id = ?;
 
 -- creates a workout
 -- /workout_form
@@ -198,10 +136,6 @@ SELECT id, name, user_id, description, startTime, endTime, created_at
 -- deletes a workout by id
 -- /workouts/delete/{id}
 DELETE FROM workouts WHERE id = ?;
-
--- retrieves all workouts for a user ordered by creation date
--- not used
-SELECT * FROM workouts WHERE user_id = ? ORDER BY created_at DESC;
 
 -- searches workouts by name for a user
 -- /search
