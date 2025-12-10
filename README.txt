@@ -1,6 +1,23 @@
 Members and contributions:
 Jake Caruana
- - 
+ - Figma web design draft
+ - UI design (mustache templates)
+ - Implemented weekly-plan database table for the home page and backend logic for weekly-plan table using:
+    - WorkoutAssignController.java
+    - WorkoutController.java
+    - WeeklyPlanService.java
+    - WeeklyPlan.java
+    - WorkoutService.java
+    - WeeklyPlanRepository.java
+ - Implemented backend logic for goals using:
+    - Goal.java
+    - GoalService.java
+    - GoalController.java
+    - ProfileController.java
+    - GoalRepository.java
+ - workout.mustache search bar implementation
+ - style.css
+
 Daniel Fairchild
  - Spring Boot app initializer configuration 
  - queries.sql writeup
@@ -11,6 +28,7 @@ Daniel Fairchild
  - WorkoutController.java implementation
  - WorkoutService.java implementation
  - ER Model design
+
 Barrett Giesbrecht
  - Prelim.pdf and db_design.pdf
  - Gathered and consolidated all SQL queries for queries.sql (with Daniel)
@@ -26,6 +44,7 @@ Barrett Giesbrecht
  - Added a fully functional Logout button + correct session termination
  - Various small UI/UX changes in style.css
  - Additional debugging and backend support throughout the project
+
 Reshi Manivannan
  - 
 
@@ -35,8 +54,7 @@ docker run -d --name workout-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -e MYSQL_DAT
 
 2. On any machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"
 
-3.
-Open the browser and navigate to the following URL:
+3. Open the browser and navigate to the following URL:
 http://localhost:8081/
 
 Technologies used:
