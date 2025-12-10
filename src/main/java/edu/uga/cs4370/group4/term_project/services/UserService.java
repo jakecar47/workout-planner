@@ -85,7 +85,7 @@ public class UserService {
      *  LOGOUT
      * --------------------------- */
     public void logout() {
-        loggedInUser = null;
+        this.loggedInUser = null;
     }
 
     /** ---------------------------

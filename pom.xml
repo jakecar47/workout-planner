@@ -90,12 +90,19 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- For reading and writing CSV files -->
+        <!-- Apache Commons CSV for CSV parsing -->
         <!-- https://commons.apache.org/proper/commons-csv/ -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.10.0</version>
+        </dependency>
+
+        <!-- Core Web (Controllers, REST, MVC) -->
+        <!-- https://docs.spring.io/spring-boot/reference/web/index.html -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
     </dependencies>

@@ -1,7 +1,9 @@
 package edu.uga.cs4370.group4.term_project.controllers;
 
+import jakarta.servlet.http.*;
 import edu.uga.cs4370.group4.term_project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -81,8 +83,9 @@ public class AuthController {
      * LOGOUT
      * ------------------------------------------------------ */
     @GetMapping("/logout")
-    public String logout() {
+    public String logout(HttpSession session) {
         userService.logout();
+        session.invalidate();
         return "redirect:/login";
     }
 }
