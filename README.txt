@@ -2,7 +2,15 @@ Members and contributions:
 Jake Caruana
  - 
 Daniel Fairchild
- - 
+ - Spring Boot app initializer configuration 
+ - queries.sql writeup
+ - pom.xml comments/review
+ - data.sql implementation
+ - mustache nav_bar fragment
+ - mustache workout .html
+ - WorkoutController.java implementation
+ - WorkoutService.java implementation
+ - ER Model design
 Barrett Giesbrecht
  - Prelim.pdf and db_design.pdf
  - Gathered and consolidated all SQL queries for queries.sql (with Daniel)
