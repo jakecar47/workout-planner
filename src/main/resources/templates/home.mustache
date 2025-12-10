@@ -28,7 +28,7 @@
           </div>
         </td>
         <td>
-          <textarea id="notes-{{key}}" class="notes-input" rows="2" placeholder="No notes yet">{{notes}}</textarea>
+          <textarea id="notes-{{key}}" class="notes-input" rows="2" placeholder="No notes yet">{{#notes}}{{notes}}{{/notes}}</textarea>
 
           <div class="save-row">
             <button type="button" id="save-{{key}}" onclick="saveNotes('{{key}}')" class="black-button primary" aria-label="Save notes for {{key}}">

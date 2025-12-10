@@ -39,7 +39,7 @@ public class WorkoutController {
     }
 
     /* ------------------------------------------------------
-     * Serves the webapage at /workouts URL.
+     * Serves the webpage at /workouts URL.
      * ------------------------------------------------------ */
     @GetMapping("/workouts")
     public String workoutsPage(Model model) {

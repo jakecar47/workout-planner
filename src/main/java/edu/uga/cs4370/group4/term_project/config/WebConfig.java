@@ -42,7 +42,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations(
-                        "file:C:/Users/reshi/cs4370-term-project-new-spring-app/uploads/"
+                        "file:/uploads/"
                 );
     }
 }
