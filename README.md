@@ -1,4 +1,5 @@
 Members and contributions:
+
 Jake Caruana
  - Figma web design draft
  - UI design (mustache templates)
