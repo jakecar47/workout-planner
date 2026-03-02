@@ -58,7 +58,8 @@ How to run:
 1. Create Docker Container with (if not done already):
 docker run -d --name workout-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -e MYSQL_DATABASE=workout_app -p 33306:3306 mysql:8.0
 
-2. On any machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"
+2.1 On any Windows machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"
+2.2 On MacOS, run: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8081"
 
 3. Open the browser and navigate to the following URL:
 http://localhost:8081/
