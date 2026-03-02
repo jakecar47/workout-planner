@@ -12,7 +12,7 @@ The application allows users to create accounts, manage workout routines, and st
 ### Frontend
 - HTML
 - CSS
-- .mustache templates
+- Mustache Templates (server-side rendering)
 
 ### Database
 - MySQL
