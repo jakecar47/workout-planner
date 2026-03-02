@@ -49,17 +49,17 @@ Barrett Giesbrecht
 Reshi Manivannan
  - Developed Substantial part of the backend including Models, Repositories, Controllers, and Services
  - Implemented Parts of the Exercises Page
- -    Developed Add Exercise Wizard
- -       Exercise Card layout
- -       Fuzzy Search Bar implementation
- -       Image uploads for the Exercise Wizard
+ - Developed Add Exercise Wizard
+ - Exercise Card layout
+ - Fuzzy Search Bar implementation
+ - Image uploads for the Exercise Wizard
  - Contributed to UI appearance and consistency across pages in style.css
 
 How to run:
-1. Create Docker Container with (if not done already):
+1. Create Docker Container with (if not done already):\
 docker run -d --name workout-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -e MYSQL_DATABASE=workout_app -p 33306:3306 mysql:8.0
 
-2.1 On any Windows machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"
+2.1 On any Windows machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"\
 2.2 On MacOS, run: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8081"
 
 3. Open the browser and navigate to the following URL:
@@ -83,22 +83,22 @@ Technologies used:
  - Git / GitHub
  - VSCode
 
-JDBC Connection:
-name:workout_app
-username:root
-password:mysqlpass
+JDBC Connection:\
+name:workout_app\
+username:root\
+password:mysqlpass\
 
-Test Account 1:
-username: john
-password: pass123
+Test Account 1:\
+username: john\
+password: pass123\
 
-Test Account 2:
-username: sarah
-password: pass123
+Test Account 2:\
+username: sarah\
+password: pass123\
 
-Test Account 3:
-username: alex
-password: pass123
+Test Account 3:\
+username: alex\
+password: pass123\
 
 External Libraries:
 Instructor permission email subject line: Permission to use Apache Commons CSV
