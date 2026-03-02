@@ -1,3 +1,5 @@
+# Workout Planner Software
+
 A full-stack workout planning application built using **Spring Boot**, **Java**, **MySQL**, and **Docker**.  
 The application allows users to create accounts, manage workout routines, and store fitness data securely using a relational database architecture.
  
