@@ -38,7 +38,7 @@ The application allows users to create accounts, manage workout routines, and st
 
 The project follows a layered MVC architecture:
 
-- **HTML Frontend** handles user interaction and form submissions.
+- **Mustache Templates** render dynamic HTML views on the server side.
 - **Spring Boot Backend** processes business logic and exposes RESTful endpoints.
 - **MySQL Database** stores user credentials and workout data.
 - **Docker** ensures consistent database setup and deployment across environments.
@@ -46,14 +46,16 @@ The project follows a layered MVC architecture:
 ---
 
 How to run:
- 1. Create Docker Container with (if not done already):\
+ 1. git clone https://github.com/jakecar47/workout-planner.git
+    
+ 2. Create Docker Container with (if not done already):\
 docker run -d --name workout-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -e MYSQL_DATABASE=workout_app -p 33306:3306 mysql:8.0
 
- 2.1 On any Windows machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"\
+ 3.
+ - On any Windows machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"\
+ - On MacOS, run: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8081"
 
- 2.2 On MacOS, run: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8081"
-
- 3. Open the browser and navigate to the following URL:
+ 4. Open the browser and navigate to the following URL:
  http://localhost:8081/
 
 ---
