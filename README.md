@@ -48,11 +48,11 @@ The project follows a layered MVC architecture:
 How to run:
  1. git clone https://github.com/jakecar47/workout-planner.git
     
- 2. Create Docker Container with (if not done already):\
+ 2. Create Docker Container with (if not done already):
 docker run -d --name workout-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -e MYSQL_DATABASE=workout_app -p 33306:3306 mysql:8.0
 
  3. See options below depending on OS used
- - On any Windows machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"\
+ - On any Windows machine that has Java installed, simply run: .\mvnw spring-boot:run --% -Dspring-boot.run.arguments="--server.port=8081"
  - On MacOS, run: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8081"
 
  4. Open the browser and navigate to the following URL:
@@ -63,19 +63,19 @@ docker run -d --name workout-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -e MYSQL_DAT
 JDBC Connection:\
 name:workout_app\
 username:root\
-password:mysqlpass\
+password:mysqlpass
 
 Test Account 1:\
 username: john\
-password: pass123\
+password: pass123
 
 Test Account 2:\
 username: sarah\
-password: pass123\
+password: pass123
 
 Test Account 3:\
 username: alex\
-password: pass123\
+password: pass123
 
 External Libraries:
 Instructor permission email subject line: Permission to use Apache Commons CSV
