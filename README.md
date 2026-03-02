@@ -1,4 +1,4 @@
-Members and contributions:
+Members and contributions:\
 
 Jake Caruana
  - Figma web design draft
